@@ -15,6 +15,7 @@ Folder: [`-sticky-wicket/`](../-sticky-wicket/)
 - **Tag:** (optional) `sticky-wicket-v2` after stable client review.
 - **Playbook sections (demo):** Anchored blocks for reorder, menu drop/push, category formats, 14-day marketing, cash on shelf, exceptions digest, and a three-things capstone (tables/lists; same V2 URL).
 - **Part 6 (owner / sales preview):** Single-page flow: labor + money, combined alerts and cash-on-shelf, labor proof chart, demand index chart, three things; secondary playbooks collapsed under "More templates."
+- **Part 7 (competitive signals):** V2 includes a **Neighborhood snapshot** block (methodology + demo comp table); `tools/comp_snapshot_pipeline.py` + `tools/comps.example.json` sketch the approved-comp-list ? fetch pipeline (no live crawl by default).
 
 ### V1 (interactive dashboard / service menu)
 

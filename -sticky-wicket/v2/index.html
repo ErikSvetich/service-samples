@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Sticky Wicket · owner-facing decision preview (demo). Timberline Data." />
+  <meta name="description" content="Sticky Wicket ? owner decision preview + neighborhood comp snapshot (demo). Timberline Data." />
   <meta name="theme-color" content="#0c0e12" />
   <title>Sticky Wicket · Decision preview (V2)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -285,7 +285,8 @@
         <li><a href="#labor-money">Labor &amp; money</a></li>
         <li><a href="#ops-alerts">Alerts &amp; cash</a></li>
         <li><a href="#proof-labor">Labor proof</a></li>
-        <li><a href="#demand-nights">Demand</a></li>
+                <li><a href="#demand-nights">Demand</a></li>
+        <li><a href="#comp-snapshot">Comps</a></li>
         <li><a href="#three-things">Three things</a></li>
         <li><a href="#more-templates">More templates</a></li>
       </ul>
@@ -418,6 +419,33 @@
       <h2 id="demand-nights-title">When the room actually fills</h2>
       <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px">Demand index by night type (demo). Regular Friday = 100. Big match / derby nights justify staffing and promo—without duplicating Square sales totals.</p>
       <div class="chart-h"><canvas id="eventsChart"></canvas></div>
+    </section>
+
+    
+    <section id="comp-snapshot" class="playbook-section" aria-labelledby="comp-snapshot-title">
+      <h2 id="comp-snapshot-title">Neighborhood snapshot (public web · demo)</h2>
+      <p class="lede">
+        <strong>Method:</strong> We combine your exports with <strong>public</strong> signals only—competitor sites, published hours, and (where allowed) Places APIs. We respect robots.txt, rate limits, and site terms; no review scraping from Yelp/Google pages. Figures below are <strong>illustrative</strong> for Portland-style sports bars.
+      </p>
+      <table class="advice" aria-label="Competitive snapshot">
+        <thead>
+          <tr>
+            <th>Venue</th>
+            <th>Source</th>
+            <th>Signal (demo)</th>
+            <th>Refreshed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Comp A (pub)</td><td>Official site</td><td>Happy hour 3–6p Mon–Fri</td><td>Weekly job</td></tr>
+          <tr><td>Comp B (sports bar)</td><td>Google Business</td><td>Listed 45 taps · kitchen to 11p</td><td>API pull</td></tr>
+          <tr><td>Comp C (nearby)</td><td>Events page</td><td>2 big-screen nights / week</td><td>Weekly crawl</td></tr>
+          <tr><td>Sticky Wicket</td><td>Your data</td><td>Baseline for comparison</td><td>Live</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.78rem;color:var(--muted);margin-top:12px">
+        Production: you approve a <strong>comp list</strong> (CSV), we schedule fetches, store diffs, and surface changes in this block—same trust bar as labor (assumptions + source).
+      </p>
     </section>
 
     <section id="three-things" class="three-things" aria-labelledby="three-things-title">

@@ -1,0 +1,14 @@
+﻿[
+  {
+    "venue": "Example pub A",
+    "source_type": "official_site",
+    "url": "https://example.com/menu",
+    "notes": "Happy hour text, kitchen hours — public pages only"
+  },
+  {
+    "venue": "Example sports bar B",
+    "source_type": "google_places_api",
+    "place_id": "ChIJxxxxxxxx",
+    "notes": "Use API; do not scrape Google HTML"
+  }
+]

@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Sticky Wicket · recommendation-first labor sample (demo). Timberline Data." />
+  <meta name="description" content="Sticky Wicket · owner-facing decision preview (demo). Timberline Data." />
   <meta name="theme-color" content="#0c0e12" />
-  <title>Sticky Wicket · What to do next (V2 sample)</title>
+  <title>Sticky Wicket · Decision preview (V2)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
@@ -21,7 +21,6 @@
       --green: #48bb78;
       --amber: #f6ad55;
       --save: #68d391;
-      --warn: #fc8181;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -34,12 +33,7 @@
       padding-bottom: max(64px, env(safe-area-inset-bottom));
     }
     .page { max-width: 920px; margin: 0 auto; }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 28px;
-    }
+    .brand { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
     .brand img { height: 52px; width: auto; }
     .brand span {
       font-family: "Montserrat", sans-serif;
@@ -72,124 +66,14 @@
     .square-note {
       font-size: 0.88rem;
       color: var(--muted);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       padding: 14px 16px;
       background: rgba(26,54,93,0.35);
       border-radius: 8px;
       border: 1px solid var(--border);
     }
     .square-note strong { color: var(--text); }
-    .outcome {
-      background: linear-gradient(135deg, rgba(26,54,93,0.6) 0%, var(--card) 100%);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 22px 20px;
-      margin-bottom: 28px;
-    }
-    .outcome .big {
-      font-family: "Montserrat", sans-serif;
-      font-weight: 800;
-      font-size: 2rem;
-      color: var(--save);
-      line-height: 1.1;
-    }
-    .outcome .sub {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-    .cal-wrap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-    @media (max-width: 720px) {
-      .cal-wrap { grid-template-columns: 1fr; }
-    }
-    .cal-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 14px;
-    }
-    .cal-card h2 {
-      font-family: "Montserrat", sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: #fff;
-    }
-    .cal-card.recommended h2 { color: var(--save); }
-    table.cal {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.72rem;
-    }
-    table.cal th {
-      font-family: "Montserrat", sans-serif;
-      font-weight: 700;
-      color: var(--muted);
-      padding: 6px 4px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    table.cal td {
-      padding: 8px 4px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    table.cal td.hrs {
-      font-weight: 700;
-      font-family: "Montserrat", sans-serif;
-    }
-    table.cal tr.dim td { color: var(--muted); font-weight: 600; }
-    .changes {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 18px;
-      margin-bottom: 28px;
-    }
-    .changes h2 {
-      font-family: "Montserrat", sans-serif;
-      font-size: 0.95rem;
-      margin-bottom: 12px;
-    }
-    .changes ul {
-      margin: 0;
-      padding-left: 1.15rem;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-    .changes li { margin-bottom: 10px; }
-    .changes strong { color: var(--text); }
-    .proof {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 16px;
-      margin-bottom: 24px;
-    }
-    .proof h2 {
-      font-family: "Montserrat", sans-serif;
-      font-size: 0.85rem;
-      margin-bottom: 10px;
-      color: var(--muted);
-    }
-    .proof .chart-h { height: 200px; position: relative; }
-    .footer-note {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-    .footer-note a { color: var(--green); font-weight: 600; }
-    .nav-back {
-      margin-top: 28px;
-      font-size: 0.82rem;
-    }
-    .nav-back a { color: var(--muted); }
-﻿    .toc {
+    .toc {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -206,16 +90,75 @@
       color: var(--muted);
       margin-bottom: 10px;
     }
-    .toc ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 14px;
-    }
+    .toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 14px; }
     .toc a { color: var(--green); font-weight: 600; text-decoration: none; }
     .toc a:hover { text-decoration: underline; }
+    .kicker { font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; line-height: 1.45; }
+    .outcome {
+      background: linear-gradient(135deg, rgba(26,54,93,0.6) 0%, var(--card) 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 20px;
+      margin-bottom: 28px;
+    }
+    .outcome h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .outcome .big {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--save);
+      line-height: 1.1;
+    }
+    .outcome .sub { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+    .cal-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+    @media (max-width: 720px) { .cal-wrap { grid-template-columns: 1fr; } }
+    .cal-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 14px;
+    }
+    .cal-card h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .cal-card.recommended h2 { color: var(--save); }
+    table.cal { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+    table.cal th {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 6px 4px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    table.cal td {
+      padding: 8px 4px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    table.cal td.hrs { font-weight: 700; font-family: "Montserrat", sans-serif; }
+    table.cal tr.dim td { color: var(--muted); font-weight: 600; }
+    .changes {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 18px;
+      margin-bottom: 28px;
+    }
+    .changes h2 { font-family: "Montserrat", sans-serif; font-size: 0.95rem; margin-bottom: 12px; }
+    .changes ul { margin: 0; padding-left: 1.15rem; color: var(--muted); font-size: 0.9rem; }
+    .changes li { margin-bottom: 10px; }
+    .changes strong { color: var(--text); }
     .playbook-section {
       background: var(--card);
       border: 1px solid var(--border);
@@ -223,320 +166,376 @@
       padding: 20px 18px;
       margin-bottom: 28px;
     }
-    .playbook-section h2 {
+    .playbook-section h2 { font-family: "Montserrat", sans-serif; font-size: 0.95rem; margin-bottom: 6px; color: #fff; }
+    .playbook-section .lede { font-size: 0.85rem; color: var(--muted); margin-bottom: 14px; }
+    .ops-split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 720px) { .ops-split { grid-template-columns: 1fr; } }
+    .ops-split h3 {
       font-family: "Montserrat", sans-serif;
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-      color: #fff;
-    }
-    .playbook-section .lede {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 700;
       color: var(--muted);
-      margin-bottom: 14px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
-    table.advice {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.78rem;
-    }
+    table.advice { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
     table.advice th {
       font-family: "Montserrat", sans-serif;
       font-weight: 700;
       color: var(--muted);
       text-align: left;
-      padding: 8px 10px 8px 0;
+      padding: 8px 8px 8px 0;
       border-bottom: 1px solid var(--border);
     }
     table.advice td {
-      padding: 10px 10px 10px 0;
+      padding: 8px 8px 8px 0;
       border-bottom: 1px solid rgba(255,255,255,0.06);
       vertical-align: top;
     }
     table.advice tr:last-child td { border-bottom: none; }
     table.advice td.num { font-variant-numeric: tabular-nums; font-family: "Montserrat", sans-serif; font-weight: 600; }
-    .advice-list { margin: 0; padding-left: 1.15rem; color: var(--muted); font-size: 0.88rem; }
-    .advice-list li { margin-bottom: 10px; }
-    .advice-list strong { color: var(--text); }
-    .playbook-bullets {
-      margin: 0;
-      padding-left: 1.15rem;
-      color: var(--muted);
-      font-size: 0.88rem;
-    }
-    .playbook-bullets li { margin-bottom: 12px; }
-    .playbook-bullets strong { color: var(--text); }
     .row-warn td { color: #fecaca; }
+    .proof {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 16px;
+      margin-bottom: 24px;
+    }
+    .proof h2 { font-family: "Montserrat", sans-serif; font-size: 0.95rem; margin-bottom: 8px; color: #fff; }
+    .proof .chart-h { height: 200px; position: relative; }
     .three-things {
       background: linear-gradient(135deg, rgba(26,54,93,0.45) 0%, var(--card) 100%);
-      border-color: rgba(72,187,120,0.25);
+      border: 1px solid rgba(72,187,120,0.25);
+      border-radius: 12px;
+      padding: 20px 18px;
+      margin-bottom: 28px;
     }
-    .three-things ol {
-      margin: 0;
-      padding-left: 1.25rem;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
+    .three-things h2 { font-family: "Montserrat", sans-serif; font-size: 0.95rem; margin-bottom: 6px; color: #fff; }
+    .three-things .lede { font-size: 0.85rem; color: var(--muted); margin-bottom: 14px; }
+    .three-things ol { margin: 0; padding-left: 1.25rem; color: var(--muted); font-size: 0.9rem; }
     .three-things li { margin-bottom: 14px; }
     .three-things strong { color: var(--text); }
     .meta { font-size: 0.78rem; color: var(--muted); }
-
+    details.more-templates {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 28px;
+    }
+    details.more-templates > summary {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--green);
+      cursor: pointer;
+      list-style: none;
+    }
+    details.more-templates > summary::-webkit-details-marker { display: none; }
+    details.more-templates .inner { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); }
+    details.sub-block {
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      background: rgba(0,0,0,0.2);
+    }
+    details.sub-block summary {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .advice-list { margin: 0.6rem 0 0; padding-left: 1.1rem; color: var(--muted); font-size: 0.82rem; }
+    .advice-list li { margin-bottom: 8px; }
+    .cta-strip {
+      background: rgba(26,54,93,0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .cta-strip strong { color: var(--save); }
+    .footer-note { font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
+    .footer-note a { color: var(--green); font-weight: 600; }
+    .nav-back { margin-top: 28px; font-size: 0.82rem; }
+    .nav-back a { color: var(--muted); }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="brand">
       <img src="../Sticky Wicket Logo.png" alt="Sticky Wicket" width="52" height="52" />
-      <span>V2 · Recommendations sample</span>
+      <span>V2 · Owner / sales preview</span>
     </div>
-    <span class="badge">Demo numbers · not your books</span>
-    <h1>You already have Square for sales. Here is what to change next week.</h1>
+    <span class="badge">Demo figures · illustrative only</span>
+    <h1>Money and coverage you can explain—without another dashboard.</h1>
     <p class="square-note">
-      <strong>Square stays the system of record</strong> for rings, categories, and tenders. This page does not replace those dashboards. It is a <strong>decision layer</strong> on top of schedule + sales exports: one number, one before/after calendar, then proof.
+      <strong>We are not replacing Square.</strong> Sales and categories stay there. This is a short <strong>decision layer</strong> on top of schedule and sales exports: dollars, a before/after pattern, then only what needs attention.
     </p>
 
-﻿    <nav class="toc" aria-label="Sections on this page">
+    <nav class="toc" aria-label="Sections on this page">
       <h2>On this page</h2>
       <ul>
-        <li><a href="#labor">Labor</a></li>
-        <li><a href="#reorder-buy">Reorder</a></li>
-        <li><a href="#menu-drop">Drop</a></li>
-        <li><a href="#menu-push">Push</a></li>
-        <li><a href="#category-playbook">Formats</a></li>
-        <li><a href="#marketing-next-14">14-day marketing</a></li>
-        <li><a href="#cash-waste">Cash on shelf</a></li>
-        <li><a href="#exceptions-today">Exceptions</a></li>
+        <li><a href="#labor-money">Labor &amp; money</a></li>
+        <li><a href="#ops-alerts">Alerts &amp; cash</a></li>
+        <li><a href="#proof-labor">Labor proof</a></li>
+        <li><a href="#demand-nights">Demand</a></li>
         <li><a href="#three-things">Three things</a></li>
-        <li><a href="#proof-chart">Proof chart</a></li>
+        <li><a href="#more-templates">More templates</a></li>
       </ul>
     </nav>
 
-    <section id="labor" aria-labelledby="labor-title">
-      <h2 id="labor-title" class="visually-hidden" style="position:absolute;clip:rect(0,0,0,0)">Labor and schedule</h2>
-
-    <section class="outcome" aria-labelledby="outcome-title">
-      <h2 id="outcome-title" class="visually-hidden" style="position:absolute;clip:rect(0,0,0,0)">Estimated savings</h2>
-      <div class="big">~$1,420 / month</div>
-      <p class="sub">Illustrative labor savings if you adopt the streamlined pattern below (blended $22/hr, demo math, 4.3 weeks/mo). Real build uses your payroll + rules.</p>
-    </section>
-
-    <div class="cal-wrap">
-      <div class="cal-card">
-        <h2>Current pattern (scheduled hours / day)</h2>
-        <table class="cal" aria-label="Current weekly staffing hours">
-          <thead>
-            <tr>
-              <th></th>
-              <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="dim" colspan="8" style="text-align:left;padding-left:4px">FOH + bar (hrs)</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td class="hrs">38</td><td class="hrs">36</td><td class="hrs">36</td><td class="hrs">40</td><td class="hrs">44</td><td class="hrs">52</td><td class="hrs">48</td>
-            </tr>
-            <tr class="dim">
-              <td colspan="8" style="text-align:left;padding-top:10px;padding-left:4px">Late overlap</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>8</td><td>8</td><td>8</td><td>8</td><td>10</td><td>14</td><td>12</td>
-            </tr>
-          </tbody>
-        </table>
+    <section id="labor-money" aria-labelledby="labor-money-title">
+      <h2 id="labor-money-title" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Labor and money</h2>
+      <div class="outcome">
+        <h2>Money left on the table this month</h2>
+        <p class="kicker">Assumption shown: blended wage <strong>$22/hr</strong>, 4.3 weeks per month, demo schedule delta only. Production uses your payroll + guardrails.</p>
+        <div class="big">~$1,420 / month</div>
+        <p class="sub">Illustrative labor savings if you adopt the streamlined weekly pattern below.</p>
       </div>
-      <div class="cal-card recommended">
-        <h2>Recommended pattern (streamlined)</h2>
-        <table class="cal" aria-label="Recommended weekly staffing hours">
-          <thead>
-            <tr>
-              <th></th>
-              <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="dim" colspan="8" style="text-align:left;padding-left:4px">FOH + bar (hrs)</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td class="hrs">34</td><td class="hrs">32</td><td class="hrs">32</td><td class="hrs">38</td><td class="hrs">44</td><td class="hrs">50</td><td class="hrs">46</td>
-            </tr>
-            <tr class="dim">
-              <td colspan="8" style="text-align:left;padding-top:10px;padding-left:4px">Late overlap</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>6</td><td>6</td><td>6</td><td>6</td><td>8</td><td>12</td><td>10</td>
-            </tr>
-          </tbody>
-        </table>
+
+      <div class="cal-wrap">
+        <div class="cal-card">
+          <h2>Current weekly hours (scheduled)</h2>
+          <table class="cal" aria-label="Current weekly staffing hours">
+            <thead>
+              <tr>
+                <th></th>
+                <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="dim" colspan="8" style="text-align:left;padding-left:4px">FOH + bar (hrs)</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="hrs">38</td><td class="hrs">36</td><td class="hrs">36</td><td class="hrs">40</td><td class="hrs">44</td><td class="hrs">52</td><td class="hrs">48</td>
+              </tr>
+              <tr class="dim">
+                <td colspan="8" style="text-align:left;padding-top:10px;padding-left:4px">Late overlap</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>8</td><td>8</td><td>8</td><td>8</td><td>10</td><td>14</td><td>12</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cal-card recommended">
+          <h2>Recommended weekly hours (streamlined)</h2>
+          <table class="cal" aria-label="Recommended weekly staffing hours">
+            <thead>
+              <tr>
+                <th></th>
+                <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="dim" colspan="8" style="text-align:left;padding-left:4px">FOH + bar (hrs)</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="hrs">34</td><td class="hrs">32</td><td class="hrs">32</td><td class="hrs">38</td><td class="hrs">44</td><td class="hrs">50</td><td class="hrs">46</td>
+              </tr>
+              <tr class="dim">
+                <td colspan="8" style="text-align:left;padding-top:10px;padding-left:4px">Late overlap</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>6</td><td>6</td><td>6</td><td>6</td><td>8</td><td>12</td><td>10</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <section class="changes">
-      <h2>What we would change (demo rules)</h2>
-      <ul>
-        <li><strong>Tue–Wed close:</strong> Remove one overlapping FOH closer after 9p when sales index trails labor (matches your quiet midweek nights).</li>
-        <li><strong>Sat–Sun late:</strong> Stage last cut 45 minutes earlier when no late fixture; keep coverage for rush, not an empty rail.</li>
-        <li><strong>Opens:</strong> Hold Mon–Thu opens steady; no change until brunch + match overlap is booked.</li>
-      </ul>
-﻿    </section>
+      <section class="changes" aria-labelledby="changes-title">
+        <h2 id="changes-title">What we would change first</h2>
+        <ul>
+          <li><strong>Tue–Wed close:</strong> Remove one overlapping FOH closer after 9p when sales trail labor (quiet midweek pattern).</li>
+          <li><strong>Sat–Sun late:</strong> Last cut 45 minutes earlier when there is no late fixture—keep the rush, not an empty rail.</li>
+          <li><strong>Opens:</strong> Hold Mon–Thu opens steady until brunch + match overlap is on the books.</li>
+        </ul>
+      </section>
     </section>
 
-    <section id="reorder-buy" class="playbook-section" aria-labelledby="reorder-buy-title">
-      <h2 id="reorder-buy-title">Order these first (low cover)</h2>
-      <p class="lede">Demo reorder list from inventory velocity — no charts; rank by days of cover and next delivery window.</p>
-      <table class="advice" aria-label="Reorder priority">
-        <thead>
-          <tr>
-            <th>SKU</th>
-            <th>Days cover</th>
-            <th>Order by</th>
-            <th>Suggested qty</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>House lager (keg)</td><td class="num">2.1</td><td>Fri AM</td><td class="num">8</td></tr>
-          <tr><td>Tonic / soda BIB</td><td class="num">3.4</td><td>Mon</td><td class="num">2</td></tr>
-          <tr><td>Well vodka (1.75)</td><td class="num">5.0</td><td>Wed</td><td class="num">6</td></tr>
-          <tr><td>Lime (case)</td><td class="num">4.2</td><td>Tue</td><td class="num">3</td></tr>
-        </tbody>
-      </table>
+    <section id="ops-alerts" class="playbook-section" aria-labelledby="ops-alerts-title">
+      <h2 id="ops-alerts-title">Only what needs attention</h2>
+      <p class="lede">Thresholds you set once—then your team only sees rows that breach them (demo). Next to it: cash stuck on the shelf from slow movers.</p>
+      <div class="ops-split">
+        <div>
+          <h3>Exceptions</h3>
+          <table class="advice" aria-label="Exceptions">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Now</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-warn"><td>Labor % (Tue)</td><td class="num">41%</td><td>Confirm 9:30p cut</td></tr>
+              <tr class="row-warn"><td>Close variance</td><td class="num">$112</td><td>Recount + log</td></tr>
+              <tr><td>86 count</td><td class="num">3</td><td>OK</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Cash on the shelf</h3>
+          <table class="advice" aria-label="Cash recovery">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Tied-up $</th>
+                <th>By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Slow liqueur</td><td class="num">$840</td><td>Promo Apr 10</td></tr>
+              <tr><td>Seasonal wine</td><td class="num">$1,100</td><td>BTG Apr 5</td></tr>
+              <tr><td>Novelty glass</td><td class="num">$220</td><td>Stop reorder</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
-    <section id="menu-drop" class="playbook-section" aria-labelledby="menu-drop-title">
-      <h2 id="menu-drop-title">Consider dropping or demoting</h2>
-      <p class="lede">Short list: low mix and margin — demo only; real build uses your PLU mix + recipe cost.</p>
-      <ul class="advice-list">
-        <li><strong>Frozen dessert special</strong> — under 3% of food sales; prep time on a quiet station.</li>
-        <li><strong>Extra brunch side (demo item)</strong> — duplicate of a higher-margin plate; consolidate menu print.</li>
-        <li><strong>Low-velocity bottled beer SKU</strong> — replace tap handle with a faster mover next reset.</li>
-      </ul>
-    </section>
-
-    <section id="menu-push" class="playbook-section" aria-labelledby="menu-push-title">
-      <h2 id="menu-push-title">Push / bundle tonight</h2>
-      <p class="lede">One action per line — chalkboard, bundle, or upsell script.</p>
-      <table class="advice" aria-label="Push list">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Sticky burger + pint</td><td>Server intro: "Burger and a local pint — $2 off before 7."</td></tr>
-          <tr><td>Happy hour rail</td><td>Bar chalk: rail + domestic — match night crowd.</td></tr>
-          <tr><td>Dessert shot flight</td><td>Dessert check-back on tables past 8:30p Fri–Sat.</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section id="category-playbook" class="playbook-section" aria-labelledby="category-playbook-title">
-      <h2 id="category-playbook-title">Do more of these formats</h2>
-      <p class="lede">Category and occasion playbooks — when to lean in (demo copy).</p>
-      <ul class="playbook-bullets">
-        <li><strong>Match days:</strong> Pints + shareables first screen on handhelds; pre-batch garnishes for speed.</li>
-        <li><strong>Brunch window:</strong> Bloody + mimosa bundle; one savory anchor plate featured on Instagram story.</li>
-        <li><strong>Quiet Tue–Wed:</strong> Late-night snack tier only if labor index clears; otherwise close kitchen on time.</li>
-      </ul>
-    </section>
-
-    <section id="marketing-next-14" class="playbook-section" aria-labelledby="marketing-next-14-title">
-      <h2 id="marketing-next-14-title">Marketing &amp; events (next 14 days)</h2>
-      <p class="lede">Dated actions — optional tie to extra bar hours if you promote a ticketed night.</p>
-      <table class="advice" aria-label="Marketing next fourteen days">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Channel</th>
-            <th>Angle</th>
-            <th>Staff note</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Mar 28</td><td>IG story</td><td>Happy hour reset — new rail feature</td><td>—</td></tr>
-          <tr><td>Mar 29</td><td>Email</td><td>Weekend brunch reservation link</td><td>+2 FOH brunch (demo)</td></tr>
-          <tr><td>Apr 3</td><td>In-house</td><td>Chalkboard: derby / match bundle</td><td>Align with bar lead</td></tr>
-          <tr><td>Apr 5</td><td>Events</td><td>Private room hold — deposit reminder</td><td>—</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section id="cash-waste" class="playbook-section" aria-labelledby="cash-waste-title">
-      <h2 id="cash-waste-title">Cash tied up on the shelf</h2>
-      <p class="lede">Slow movers and dollars at risk — act by date (promo, transfer, or cut next PO).</p>
-      <table class="advice" aria-label="Cash recovery">
-        <thead>
-          <tr>
-            <th>SKU</th>
-            <th>Tied-up $ (demo)</th>
-            <th>Action by</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Specialty liqueur (slow)</td><td class="num">$840</td><td>Run shot feature or promo by Apr 10</td></tr>
-          <tr><td>Seasonal case wine</td><td class="num">$1,100</td><td>By-the-glass feature + staff taste Apr 5</td></tr>
-          <tr><td>Extra novelty glassware</td><td class="num">$220</td><td>Stop reorder; use in event kits only</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section id="exceptions-today" class="playbook-section" aria-labelledby="exceptions-today-title">
-      <h2 id="exceptions-today-title">Exceptions needing attention</h2>
-      <p class="lede">Only rows that breach a threshold — one action each (illustrative).</p>
-      <table class="advice" aria-label="Exceptions">
-        <thead>
-          <tr>
-            <th>Metric</th>
-            <th>Threshold</th>
-            <th>Now</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="row-warn"><td>Labor % of sales (Tue)</td><td>&gt; 38%</td><td class="num">41%</td><td>Confirm cut at 9:30p per playbook</td></tr>
-          <tr class="row-warn"><td>Variance (last close)</td><td>&gt; $75</td><td class="num">$112</td><td>Manager recount + note on shift log</td></tr>
-          <tr><td>86 list length</td><td>&gt; 5 items</td><td class="num">3</td><td>OK — no action</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section id="three-things" class="playbook-section three-things" aria-labelledby="three-things-title">
-      <h2 id="three-things-title">If you only do three things this week</h2>
-      <p class="lede">Capstone picks from the lists above — demo placeholders for owner and deadline.</p>
-      <ol>
-        <li><strong>Adopt Tue–Wed late cut</strong> <span class="meta">· Owner: GM · By: next payroll cycle</span></li>
-        <li><strong>Run cash-on-shelf promo on slow liqueur</strong> <span class="meta">· Owner: Bar lead · By: Apr 10</span></li>
-        <li><strong>Post weekend brunch email + staff +2 for service</strong> <span class="meta">· Owner: AGM · By: Mar 29 service</span></li>
-      </ol>
-    </section>
-
-    <section id="proof-chart" class="proof">
-
-      <h2>Optional proof (one chart, not a dashboard wall)</h2>
-      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px">Total scheduled hours per week: current vs recommended. Same POS; we are only reshaping labor to demand.</p>
+    <section id="proof-labor" class="proof" aria-labelledby="proof-labor-title">
+      <h2 id="proof-labor-title">Why the labor number is believable</h2>
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px">One comparison—not a wall of charts. Same POS; we only reshape total weekly hours to the recommended pattern.</p>
       <div class="chart-h"><canvas id="proofChart"></canvas></div>
     </section>
 
+    <section id="demand-nights" class="proof" aria-labelledby="demand-nights-title">
+      <h2 id="demand-nights-title">When the room actually fills</h2>
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px">Demand index by night type (demo). Regular Friday = 100. Big match / derby nights justify staffing and promo—without duplicating Square sales totals.</p>
+      <div class="chart-h"><canvas id="eventsChart"></canvas></div>
+    </section>
+
+    <section id="three-things" class="three-things" aria-labelledby="three-things-title">
+      <h2 id="three-things-title">If you only do three things this week</h2>
+      <p class="lede">Pulled from labor, alerts, and demand above—so a new manager can run with it.</p>
+      <ol>
+        <li><strong>Lock the Tue–Wed late cut</strong> <span class="meta">· Owner: GM · Payroll cycle</span></li>
+        <li><strong>Clear the $112 variance + log</strong> <span class="meta">· Owner: MOD · Next close</span></li>
+        <li><strong>Staff and promo for the next big match night</strong> <span class="meta">· Owner: AGM · Per calendar</span></li>
+      </ol>
+    </section>
+
+    <details class="more-templates" id="more-templates">
+      <summary>More playbook templates (reorder, menu, marketing)</summary>
+      <div class="inner">
+        <p class="lede" style="margin-bottom:14px">Same formats as a full ops engagement—collapsed here so the owner path stays short.</p>
+
+        <details class="sub-block" id="reorder-buy">
+          <summary>Order these first (low cover)</summary>
+          <table class="advice" style="margin-top:10px" aria-label="Reorder">
+            <thead>
+              <tr><th>SKU</th><th>Days</th><th>Order by</th><th>Qty</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>House lager (keg)</td><td class="num">2.1</td><td>Fri AM</td><td class="num">8</td></tr>
+              <tr><td>Tonic BIB</td><td class="num">3.4</td><td>Mon</td><td class="num">2</td></tr>
+              <tr><td>Well vodka</td><td class="num">5.0</td><td>Wed</td><td class="num">6</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <details class="sub-block" id="menu-drop">
+          <summary>Consider dropping or demoting</summary>
+          <ul class="advice-list">
+            <li><strong>Frozen dessert special</strong> — low mix; prep on a quiet station.</li>
+            <li><strong>Extra brunch side</strong> — overlaps a better margin plate.</li>
+          </ul>
+        </details>
+
+        <details class="sub-block" id="menu-push">
+          <summary>Push / bundle tonight</summary>
+          <table class="advice" style="margin-top:10px" aria-label="Push">
+            <thead><tr><th>Item</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>Burger + pint</td><td>Intro + $2 off before 7p</td></tr>
+              <tr><td>Happy hour rail</td><td>Chalk: rail + domestic</td></tr>
+            </tbody>
+          </table>
+        </details>
+
+        <details class="sub-block" id="category-playbook">
+          <summary>Formats to lean into</summary>
+          <ul class="advice-list">
+            <li><strong>Match days:</strong> Pints + shareables first on handhelds.</li>
+            <li><strong>Brunch:</strong> Bloody + mimosa bundle featured.</li>
+          </ul>
+        </details>
+
+        <details class="sub-block" id="marketing-next-14">
+          <summary>Marketing (next 14 days)</summary>
+          <table class="advice" style="margin-top:10px" aria-label="Marketing">
+            <thead><tr><th>Date</th><th>Channel</th><th>Angle</th></tr></thead>
+            <tbody>
+              <tr><td>Mar 28</td><td>IG</td><td>Happy hour reset</td></tr>
+              <tr><td>Mar 29</td><td>Email</td><td>Brunch RSVP</td></tr>
+              <tr><td>Apr 3</td><td>In-house</td><td>Match bundle chalk</td></tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+    </details>
+
+    <p class="cta-strip" role="status">
+      <strong>Next step:</strong> Send a recent schedule export and blended wage—or book a 30-minute walkthrough. We will plug in OLCC / union rules on the real build.
+    </p>
+
     <p class="footer-note">
-      Production version wires to Square Team or schedule export + your wage table + OLCC and union rules. Compare the <a href="../index.html">V1 technical “service menu”</a> (charts &amp; filters) if you want the full analytics tour.
+      Want the full interactive tour (KPIs, filters, extra charts)? See the <a href="../index.html">V1 technical service menu</a>.
     </p>
     <p class="nav-back"><a href="../../index.html">← Service samples hub</a></p>
   </div>
   <script>
     const green = "#48bb78";
     const amber = "#ed8936";
-    const ctx = document.getElementById("proofChart");
-    new Chart(ctx, {
+    const navy = "#1a365d";
+    const grid = "rgba(255,255,255,0.06)";
+    const tick = "#94a3b8";
+
+    const chartOpts = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: navy,
+          titleFont: { family: "Montserrat", weight: "700" },
+          bodyFont: { family: "Open Sans" }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: tick, font: { size: 11 } },
+          grid: { display: false }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: { color: tick },
+          grid: { color: grid }
+        }
+      }
+    };
+
+    new Chart(document.getElementById("proofChart"), {
       type: "bar",
       data: {
         labels: ["Current pattern", "Recommended"],
         datasets: [{
-          label: "Weekly labor hours (demo)",
+          label: "Weekly labor hours",
           data: [302, 274],
           backgroundColor: [amber, green],
           borderRadius: 8,
@@ -544,30 +543,49 @@
         }]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...chartOpts,
         plugins: {
-          legend: { display: false },
+          ...chartOpts.plugins,
           tooltip: {
-            backgroundColor: "#1a365d",
-            titleFont: { family: "Montserrat", weight: "700" },
-            bodyFont: { family: "Open Sans" },
+            ...chartOpts.plugins.tooltip,
             callbacks: {
               label: (c) => " " + c.parsed.y + " hrs / week (illustrative)"
             }
           }
         },
         scales: {
-          x: {
-            ticks: { color: "#94a3b8", font: { size: 11 } },
-            grid: { display: false }
-          },
-          y: {
-            beginAtZero: true,
-            max: 340,
-            ticks: { color: "#94a3b8" },
-            grid: { color: "rgba(255,255,255,0.06)" }
+          ...chartOpts.scales,
+          y: { ...chartOpts.scales.y, max: 340 }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("eventsChart"), {
+      type: "bar",
+      data: {
+        labels: ["Quiet Tue", "Regular Fri", "Match / derby", "Brunch Sun"],
+        datasets: [{
+          label: "Demand index",
+          data: [48, 100, 138, 86],
+          backgroundColor: ["#4a5568", amber, green, "#4299e1"],
+          borderRadius: 8,
+          barPercentage: 0.65
+        }]
+      },
+      options: {
+        ...chartOpts,
+        plugins: {
+          ...chartOpts.plugins,
+          tooltip: {
+            ...chartOpts.plugins.tooltip,
+            callbacks: {
+              label: (c) => " Index " + c.parsed.y + " (Fri = 100, demo)"
+            }
           }
+        },
+        scales: {
+          ...chartOpts.scales,
+          y: { ...chartOpts.scales.y, max: 160 }
         }
       }
     });

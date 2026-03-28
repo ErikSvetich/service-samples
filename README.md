@@ -6,17 +6,35 @@ Private-style portfolio decks we send to prospects. Each client gets a **`-<clie
 |--------|--------|--------|
 | `-sticky-wicket/` | Sticky Wicket (Portland) | Interactive analytics concept deck |
 
+## GitHub connection
+
+Main marketing site remote (for reference):
+
+`https://github.com/ErikSvetich/timberlinedata.tech.git`
+
+This repo is a **separate** GitHub project: **`ErikSvetich/service-samples`**.
+
+### First-time push (from this folder)
+
+If the GitHub repo does not exist yet:
+
+1. On GitHub: **New repository** → name **`service-samples`** → Public → **do not** add README (this repo already has one).
+2. In a terminal:
+
+```bash
+cd path/to/service-samples
+git remote add origin https://github.com/ErikSvetich/service-samples.git
+git push -u origin main
+```
+
 ## GitHub Pages
 
-Same GitHub account as the main site: [`ErikSvetich/timberlinedata.tech`](https://github.com/ErikSvetich/timberlinedata.tech).
-
-1. Create this repository on GitHub: **`ErikSvetich/service-samples`** (empty, no README if you are pushing from here).
-2. **Settings → Pages** → Build and deployment: **Deploy from a branch** → Branch **`main`**, folder **`/` (root)**.
-3. After the first deploy, the site will be at:
+1. In **`service-samples`** on GitHub: **Settings → Pages** → **Deploy from a branch** → Branch **`main`**, folder **`/` (root)**.
+2. After the first deploy, the site will be at:
 
    **`https://eriksvetich.github.io/service-samples/`**
 
-4. Sticky Wicket deck (direct link):
+3. Sticky Wicket deck (direct link):
 
    **`https://eriksvetich.github.io/service-samples/-sticky-wicket/`**
 

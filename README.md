@@ -4,7 +4,7 @@ Private-style portfolio decks we send to prospects. Each client gets a **`-<clie
 
 | Folder | Client | Sample |
 |--------|--------|--------|
-| `-sticky-wicket/` | Sticky Wicket (Portland) | Interactive analytics concept deck |
+| `-sticky-wicket/` | Sticky Wicket (Portland) | [V2 recommendations](-sticky-wicket/v2/) · [V1 dashboard](-sticky-wicket/) · [folder README](-sticky-wicket/README.md) · [changelog](docs/sample-versions.md) |
 
 ## GitHub connection
 

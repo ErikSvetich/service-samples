@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Sticky Wicket · recommendation-first labor sample (demo). Timberline Data." />
+  <meta name="theme-color" content="#0c0e12" />
+  <title>Sticky Wicket · What to do next (V2 sample)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #0c0e12;
+      --card: #151922;
+      --border: rgba(255,255,255,0.1);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --navy: #1a365d;
+      --green: #48bb78;
+      --amber: #f6ad55;
+      --save: #68d391;
+      --warn: #fc8181;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Open Sans", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+      padding: 24px 16px 64px;
+      padding-bottom: max(64px, env(safe-area-inset-bottom));
+    }
+    .page { max-width: 920px; margin: 0 auto; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .brand img { height: 52px; width: auto; }
+    .brand span {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .badge {
+      display: inline-block;
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      border: 1px solid rgba(72,187,120,0.4);
+      padding: 5px 10px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.35rem, 4vw, 1.85rem);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .square-note {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      padding: 14px 16px;
+      background: rgba(26,54,93,0.35);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .square-note strong { color: var(--text); }
+    .outcome {
+      background: linear-gradient(135deg, rgba(26,54,93,0.6) 0%, var(--card) 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 20px;
+      margin-bottom: 28px;
+    }
+    .outcome .big {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--save);
+      line-height: 1.1;
+    }
+    .outcome .sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .cal-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 720px) {
+      .cal-wrap { grid-template-columns: 1fr; }
+    }
+    .cal-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 14px;
+    }
+    .cal-card h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .cal-card.recommended h2 { color: var(--save); }
+    table.cal {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+    }
+    table.cal th {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 6px 4px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    table.cal td {
+      padding: 8px 4px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    table.cal td.hrs {
+      font-weight: 700;
+      font-family: "Montserrat", sans-serif;
+    }
+    table.cal tr.dim td { color: var(--muted); font-weight: 600; }
+    .changes {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 18px;
+      margin-bottom: 28px;
+    }
+    .changes h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    .changes ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .changes li { margin-bottom: 10px; }
+    .changes strong { color: var(--text); }
+    .proof {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 16px;
+      margin-bottom: 24px;
+    }
+    .proof h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+    .proof .chart-h { height: 200px; position: relative; }
+    .footer-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .footer-note a { color: var(--green); font-weight: 600; }
+    .nav-back {
+      margin-top: 28px;
+      font-size: 0.82rem;
+    }
+    .nav-back a { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="brand">
+      <img src="../Sticky Wicket Logo.png" alt="Sticky Wicket" width="52" height="52" />
+      <span>V2 · Recommendations sample</span>
+    </div>
+    <span class="badge">Demo numbers · not your books</span>
+    <h1>You already have Square for sales. Here is what to change next week.</h1>
+    <p class="square-note">
+      <strong>Square stays the system of record</strong> for rings, categories, and tenders. This page does not replace those dashboards. It is a <strong>decision layer</strong> on top of schedule + sales exports: one number, one before/after calendar, then proof.
+    </p>
+
+    <section class="outcome" aria-labelledby="outcome-title">
+      <h2 id="outcome-title" class="visually-hidden" style="position:absolute;clip:rect(0,0,0,0)">Estimated savings</h2>
+      <div class="big">~$1,420 / month</div>
+      <p class="sub">Illustrative labor savings if you adopt the streamlined pattern below (blended $22/hr, demo math, 4.3 weeks/mo). Real build uses your payroll + rules.</p>
+    </section>
+
+    <div class="cal-wrap">
+      <div class="cal-card">
+        <h2>Current pattern (scheduled hours / day)</h2>
+        <table class="cal" aria-label="Current weekly staffing hours">
+          <thead>
+            <tr>
+              <th></th>
+              <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="dim" colspan="8" style="text-align:left;padding-left:4px">FOH + bar (hrs)</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="hrs">38</td><td class="hrs">36</td><td class="hrs">36</td><td class="hrs">40</td><td class="hrs">44</td><td class="hrs">52</td><td class="hrs">48</td>
+            </tr>
+            <tr class="dim">
+              <td colspan="8" style="text-align:left;padding-top:10px;padding-left:4px">Late overlap</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>8</td><td>8</td><td>8</td><td>8</td><td>10</td><td>14</td><td>12</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cal-card recommended">
+        <h2>Recommended pattern (streamlined)</h2>
+        <table class="cal" aria-label="Recommended weekly staffing hours">
+          <thead>
+            <tr>
+              <th></th>
+              <th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="dim" colspan="8" style="text-align:left;padding-left:4px">FOH + bar (hrs)</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="hrs">34</td><td class="hrs">32</td><td class="hrs">32</td><td class="hrs">38</td><td class="hrs">44</td><td class="hrs">50</td><td class="hrs">46</td>
+            </tr>
+            <tr class="dim">
+              <td colspan="8" style="text-align:left;padding-top:10px;padding-left:4px">Late overlap</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>6</td><td>6</td><td>6</td><td>6</td><td>8</td><td>12</td><td>10</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <section class="changes">
+      <h2>What we would change (demo rules)</h2>
+      <ul>
+        <li><strong>Tue–Wed close:</strong> Remove one overlapping FOH closer after 9p when sales index trails labor (matches your quiet midweek nights).</li>
+        <li><strong>Sat–Sun late:</strong> Stage last cut 45 minutes earlier when no late fixture; keep coverage for rush, not an empty rail.</li>
+        <li><strong>Opens:</strong> Hold Mon–Thu opens steady; no change until brunch + match overlap is booked.</li>
+      </ul>
+    </section>
+
+    <section class="proof">
+      <h2>Optional proof (one chart, not a dashboard wall)</h2>
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px">Total scheduled hours per week: current vs recommended. Same POS; we are only reshaping labor to demand.</p>
+      <div class="chart-h"><canvas id="proofChart"></canvas></div>
+    </section>
+
+    <p class="footer-note">
+      Production version wires to Square Team or schedule export + your wage table + OLCC and union rules. Compare the <a href="../index.html">V1 technical “service menu”</a> (charts &amp; filters) if you want the full analytics tour.
+    </p>
+    <p class="nav-back"><a href="../../index.html">← Service samples hub</a></p>
+  </div>
+  <script>
+    const green = "#48bb78";
+    const amber = "#ed8936";
+    const ctx = document.getElementById("proofChart");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Current pattern", "Recommended"],
+        datasets: [{
+          label: "Weekly labor hours (demo)",
+          data: [302, 274],
+          backgroundColor: [amber, green],
+          borderRadius: 8,
+          barPercentage: 0.55
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "#1a365d",
+            titleFont: { family: "Montserrat", weight: "700" },
+            bodyFont: { family: "Open Sans" },
+            callbacks: {
+              label: (c) => " " + c.parsed.y + " hrs / week (illustrative)"
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: "#94a3b8", font: { size: 11 } },
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            max: 340,
+            ticks: { color: "#94a3b8" },
+            grid: { color: "rgba(255,255,255,0.06)" }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

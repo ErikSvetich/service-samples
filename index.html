@@ -41,12 +41,28 @@
     .sub {
       color: var(--muted);
       font-size: 0.95rem;
-      margin-bottom: 32px;
+      margin-bottom: 12px;
+    }
+    .meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .meta a { color: var(--navy); font-weight: 600; }
+    .client-block {
+      margin-bottom: 28px;
+    }
+    .client-block h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 12px;
     }
     .cards {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
     a.card {
       display: block;
@@ -63,7 +79,10 @@
       border-color: var(--navy);
       box-shadow: 0 8px 24px rgba(26, 54, 93, 0.12);
     }
-    .card h2 {
+    a.card.feature {
+      border-color: rgba(47, 133, 90, 0.35);
+    }
+    .card h3 {
       font-family: "Montserrat", sans-serif;
       font-size: 1.05rem;
       font-weight: 700;
@@ -87,6 +106,19 @@
       font-size: 0.8rem;
       color: var(--green);
     }
+    .pill {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-family: "Montserrat", sans-serif;
+    }
+    .pill.v2 { background: #c6f6d5; color: #22543d; }
+    .pill.v1 { background: #e2e8f0; color: #4a5568; }
     footer {
       margin-top: 48px;
       padding-top: 24px;
@@ -103,15 +135,29 @@
 <body>
   <div class="wrap">
     <h1>Service samples</h1>
-    <p class="sub">Timberline Data · interactive decks shared with prospects. Each folder is named <code>-client-slug</code>.</p>
-    <div class="cards">
-      <a class="card" href="-sticky-wicket/">
-        <h2>Sticky Wicket</h2>
-        <div class="slug">/-sticky-wicket/</div>
-        <p>Portland sports bar · analytics concept menu (Chart.js demos, dark theme).</p>
-        <div class="go">Open sample →</div>
-      </a>
+    <p class="sub">Timberline Data · interactive decks shared with prospects. Each client folder is named <code>-client-slug</code>.</p>
+    <p class="meta">Version history: <a href="https://github.com/ErikSvetich/service-samples/blob/main/docs/sample-versions.md">docs/sample-versions.md</a> (GitHub)</p>
+
+    <div class="client-block">
+      <h2>Sticky Wicket</h2>
+      <div class="cards">
+        <a class="card feature" href="-sticky-wicket/v2/">
+          <span class="pill v2">Default story · V2</span>
+          <h3>Recommendations first</h3>
+          <div class="slug">/-sticky-wicket/v2/</div>
+          <p>Headline savings, current vs streamlined staffing pattern, bullets. Built for teams who already use Square and want explicit “change this, save about $X” guidance.</p>
+          <div class="go">Open V2 →</div>
+        </a>
+        <a class="card" href="-sticky-wicket/">
+          <span class="pill v1">Technical appendix · V1</span>
+          <h3>Full interactive “service menu”</h3>
+          <div class="slug">/-sticky-wicket/</div>
+          <p>Chart.js dashboards, KPIs, filters (events, labor, menu, inventory). Same folder URL as before.</p>
+          <div class="go">Open V1 →</div>
+        </a>
+      </div>
     </div>
+
     <footer>
       <p><a href="https://timberlinedata.tech/">timberlinedata.tech</a> · Repo: <a href="https://github.com/ErikSvetich/service-samples">ErikSvetich/service-samples</a></p>
     </footer>

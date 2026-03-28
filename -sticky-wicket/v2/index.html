@@ -189,6 +189,97 @@
       font-size: 0.82rem;
     }
     .nav-back a { color: var(--muted); }
+﻿    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 28px;
+      font-size: 0.82rem;
+    }
+    .toc h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+    }
+    .toc a { color: var(--green); font-weight: 600; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .playbook-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 18px;
+      margin-bottom: 28px;
+    }
+    .playbook-section h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+    .playbook-section .lede {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    table.advice {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+    table.advice th {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: left;
+      padding: 8px 10px 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    table.advice td {
+      padding: 10px 10px 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      vertical-align: top;
+    }
+    table.advice tr:last-child td { border-bottom: none; }
+    table.advice td.num { font-variant-numeric: tabular-nums; font-family: "Montserrat", sans-serif; font-weight: 600; }
+    .advice-list { margin: 0; padding-left: 1.15rem; color: var(--muted); font-size: 0.88rem; }
+    .advice-list li { margin-bottom: 10px; }
+    .advice-list strong { color: var(--text); }
+    .playbook-bullets {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .playbook-bullets li { margin-bottom: 12px; }
+    .playbook-bullets strong { color: var(--text); }
+    .row-warn td { color: #fecaca; }
+    .three-things {
+      background: linear-gradient(135deg, rgba(26,54,93,0.45) 0%, var(--card) 100%);
+      border-color: rgba(72,187,120,0.25);
+    }
+    .three-things ol {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .three-things li { margin-bottom: 14px; }
+    .three-things strong { color: var(--text); }
+    .meta { font-size: 0.78rem; color: var(--muted); }
+
   </style>
 </head>
 <body>
@@ -202,6 +293,25 @@
     <p class="square-note">
       <strong>Square stays the system of record</strong> for rings, categories, and tenders. This page does not replace those dashboards. It is a <strong>decision layer</strong> on top of schedule + sales exports: one number, one before/after calendar, then proof.
     </p>
+
+﻿    <nav class="toc" aria-label="Sections on this page">
+      <h2>On this page</h2>
+      <ul>
+        <li><a href="#labor">Labor</a></li>
+        <li><a href="#reorder-buy">Reorder</a></li>
+        <li><a href="#menu-drop">Drop</a></li>
+        <li><a href="#menu-push">Push</a></li>
+        <li><a href="#category-playbook">Formats</a></li>
+        <li><a href="#marketing-next-14">14-day marketing</a></li>
+        <li><a href="#cash-waste">Cash on shelf</a></li>
+        <li><a href="#exceptions-today">Exceptions</a></li>
+        <li><a href="#three-things">Three things</a></li>
+        <li><a href="#proof-chart">Proof chart</a></li>
+      </ul>
+    </nav>
+
+    <section id="labor" aria-labelledby="labor-title">
+      <h2 id="labor-title" class="visually-hidden" style="position:absolute;clip:rect(0,0,0,0)">Labor and schedule</h2>
 
     <section class="outcome" aria-labelledby="outcome-title">
       <h2 id="outcome-title" class="visually-hidden" style="position:absolute;clip:rect(0,0,0,0)">Estimated savings</h2>
@@ -273,9 +383,140 @@
         <li><strong>Sat–Sun late:</strong> Stage last cut 45 minutes earlier when no late fixture; keep coverage for rush, not an empty rail.</li>
         <li><strong>Opens:</strong> Hold Mon–Thu opens steady; no change until brunch + match overlap is booked.</li>
       </ul>
+﻿    </section>
     </section>
 
-    <section class="proof">
+    <section id="reorder-buy" class="playbook-section" aria-labelledby="reorder-buy-title">
+      <h2 id="reorder-buy-title">Order these first (low cover)</h2>
+      <p class="lede">Demo reorder list from inventory velocity — no charts; rank by days of cover and next delivery window.</p>
+      <table class="advice" aria-label="Reorder priority">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Days cover</th>
+            <th>Order by</th>
+            <th>Suggested qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>House lager (keg)</td><td class="num">2.1</td><td>Fri AM</td><td class="num">8</td></tr>
+          <tr><td>Tonic / soda BIB</td><td class="num">3.4</td><td>Mon</td><td class="num">2</td></tr>
+          <tr><td>Well vodka (1.75)</td><td class="num">5.0</td><td>Wed</td><td class="num">6</td></tr>
+          <tr><td>Lime (case)</td><td class="num">4.2</td><td>Tue</td><td class="num">3</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="menu-drop" class="playbook-section" aria-labelledby="menu-drop-title">
+      <h2 id="menu-drop-title">Consider dropping or demoting</h2>
+      <p class="lede">Short list: low mix and margin — demo only; real build uses your PLU mix + recipe cost.</p>
+      <ul class="advice-list">
+        <li><strong>Frozen dessert special</strong> — under 3% of food sales; prep time on a quiet station.</li>
+        <li><strong>Extra brunch side (demo item)</strong> — duplicate of a higher-margin plate; consolidate menu print.</li>
+        <li><strong>Low-velocity bottled beer SKU</strong> — replace tap handle with a faster mover next reset.</li>
+      </ul>
+    </section>
+
+    <section id="menu-push" class="playbook-section" aria-labelledby="menu-push-title">
+      <h2 id="menu-push-title">Push / bundle tonight</h2>
+      <p class="lede">One action per line — chalkboard, bundle, or upsell script.</p>
+      <table class="advice" aria-label="Push list">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Sticky burger + pint</td><td>Server intro: "Burger and a local pint — $2 off before 7."</td></tr>
+          <tr><td>Happy hour rail</td><td>Bar chalk: rail + domestic — match night crowd.</td></tr>
+          <tr><td>Dessert shot flight</td><td>Dessert check-back on tables past 8:30p Fri–Sat.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="category-playbook" class="playbook-section" aria-labelledby="category-playbook-title">
+      <h2 id="category-playbook-title">Do more of these formats</h2>
+      <p class="lede">Category and occasion playbooks — when to lean in (demo copy).</p>
+      <ul class="playbook-bullets">
+        <li><strong>Match days:</strong> Pints + shareables first screen on handhelds; pre-batch garnishes for speed.</li>
+        <li><strong>Brunch window:</strong> Bloody + mimosa bundle; one savory anchor plate featured on Instagram story.</li>
+        <li><strong>Quiet Tue–Wed:</strong> Late-night snack tier only if labor index clears; otherwise close kitchen on time.</li>
+      </ul>
+    </section>
+
+    <section id="marketing-next-14" class="playbook-section" aria-labelledby="marketing-next-14-title">
+      <h2 id="marketing-next-14-title">Marketing &amp; events (next 14 days)</h2>
+      <p class="lede">Dated actions — optional tie to extra bar hours if you promote a ticketed night.</p>
+      <table class="advice" aria-label="Marketing next fourteen days">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Channel</th>
+            <th>Angle</th>
+            <th>Staff note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Mar 28</td><td>IG story</td><td>Happy hour reset — new rail feature</td><td>—</td></tr>
+          <tr><td>Mar 29</td><td>Email</td><td>Weekend brunch reservation link</td><td>+2 FOH brunch (demo)</td></tr>
+          <tr><td>Apr 3</td><td>In-house</td><td>Chalkboard: derby / match bundle</td><td>Align with bar lead</td></tr>
+          <tr><td>Apr 5</td><td>Events</td><td>Private room hold — deposit reminder</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="cash-waste" class="playbook-section" aria-labelledby="cash-waste-title">
+      <h2 id="cash-waste-title">Cash tied up on the shelf</h2>
+      <p class="lede">Slow movers and dollars at risk — act by date (promo, transfer, or cut next PO).</p>
+      <table class="advice" aria-label="Cash recovery">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Tied-up $ (demo)</th>
+            <th>Action by</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Specialty liqueur (slow)</td><td class="num">$840</td><td>Run shot feature or promo by Apr 10</td></tr>
+          <tr><td>Seasonal case wine</td><td class="num">$1,100</td><td>By-the-glass feature + staff taste Apr 5</td></tr>
+          <tr><td>Extra novelty glassware</td><td class="num">$220</td><td>Stop reorder; use in event kits only</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="exceptions-today" class="playbook-section" aria-labelledby="exceptions-today-title">
+      <h2 id="exceptions-today-title">Exceptions needing attention</h2>
+      <p class="lede">Only rows that breach a threshold — one action each (illustrative).</p>
+      <table class="advice" aria-label="Exceptions">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Threshold</th>
+            <th>Now</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-warn"><td>Labor % of sales (Tue)</td><td>&gt; 38%</td><td class="num">41%</td><td>Confirm cut at 9:30p per playbook</td></tr>
+          <tr class="row-warn"><td>Variance (last close)</td><td>&gt; $75</td><td class="num">$112</td><td>Manager recount + note on shift log</td></tr>
+          <tr><td>86 list length</td><td>&gt; 5 items</td><td class="num">3</td><td>OK — no action</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="three-things" class="playbook-section three-things" aria-labelledby="three-things-title">
+      <h2 id="three-things-title">If you only do three things this week</h2>
+      <p class="lede">Capstone picks from the lists above — demo placeholders for owner and deadline.</p>
+      <ol>
+        <li><strong>Adopt Tue–Wed late cut</strong> <span class="meta">· Owner: GM · By: next payroll cycle</span></li>
+        <li><strong>Run cash-on-shelf promo on slow liqueur</strong> <span class="meta">· Owner: Bar lead · By: Apr 10</span></li>
+        <li><strong>Post weekend brunch email + staff +2 for service</strong> <span class="meta">· Owner: AGM · By: Mar 29 service</span></li>
+      </ol>
+    </section>
+
+    <section id="proof-chart" class="proof">
+
       <h2>Optional proof (one chart, not a dashboard wall)</h2>
       <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px">Total scheduled hours per week: current vs recommended. Same POS; we are only reshaping labor to demand.</p>
       <div class="chart-h"><canvas id="proofChart"></canvas></div>

@@ -13,6 +13,7 @@ Folder: [`-sticky-wicket/`](../-sticky-wicket/)
 - **Path:** `-sticky-wicket/v2/index.html`
 - **Intent:** Address feedback that V1 felt like “more POS-style charts” on top of Square. V2 leads with **explicit recommendations**: estimated monthly savings, **current vs streamlined** staffing pattern (demo calendar), and **what changed** bullets. Optional small proof chart below the fold only to justify a single claim.
 - **Tag:** (optional) `sticky-wicket-v2` after stable client review.
+- **Playbook sections (demo):** Anchored blocks for reorder, menu drop/push, category formats, 14-day marketing, cash on shelf, exceptions digest, and a three-things capstone (tables/lists; same V2 URL).
 
 ### V1 (interactive dashboard / service menu)
 

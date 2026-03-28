@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<!--
+  SHARING THIS DECK
+  • Plain “text” (SMS/iMessage): paste a link, not the raw HTML. Host the file (Netlify Drop,
+    GitHub Pages, Drive/Dropbox “anyone with link”) or send the .html as an email attachment.
+  • Works offline on your phone: keep this .html in the same folder as “Sticky Wicket Logo.png”
+    and open in Safari/Chrome. To share one file only, you’d need the logo embedded as base64
+    (large); a zip of folder + logo is usually easier.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive analytics concepts for Sticky Wicket: dashboards, forecasts, and ops intelligence by Timberline Data." />
+  <meta name="theme-color" content="#050508" />
+  <title>Sticky Wicket × Analytics | Interactive Concepts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary-blue: #1a365d;
+      --accent-green: #2f855a;
+      --chart-green: #48bb78;
+      --chart-blue: #4299e1;
+      --chart-orange: #ed8936;
+      --chart-purple: #9f7aea;
+      --chart-gray: #a0aec0;
+      --bg: #050508;
+      --surface: #0e1016;
+      --card: #12151c;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --dim: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: "Open Sans", system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: clip;
+      touch-action: manipulation;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(26, 54, 93, 0.45), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 50%, rgba(47, 133, 90, 0.12), transparent),
+        radial-gradient(ellipse 50% 30% at 0% 80%, rgba(66, 153, 225, 0.08), transparent);
+      pointer-events: none;
+    }
+
+    .nav {
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 24px;
+      padding-left: max(24px, env(safe-area-inset-left));
+      padding-right: max(24px, env(safe-area-inset-right));
+      max-width: 1240px;
+      margin: 0 auto;
+      background: rgba(5, 5, 8, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-brand img {
+      height: 44px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-brand span {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+      border-color: var(--card-border);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+      padding-bottom: max(80px, env(safe-area-inset-bottom));
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+    }
+
+    .hero {
+      text-align: center;
+      padding: 24px 0 48px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 40px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--chart-green);
+      background: rgba(72, 187, 120, 0.12);
+      border: 1px solid rgba(72, 187, 120, 0.35);
+      padding: 6px 14px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+      line-height: 1.15;
+      color: #fff;
+      max-width: 18ch;
+      margin: 0 auto 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .gradient {
+      background: linear-gradient(135deg, #68d391 0%, #4299e1 50%, #9f7aea 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p.lead {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 36rem;
+      margin: 0 auto 20px;
+    }
+
+    .hero p.proof {
+      font-size: 0.88rem;
+      color: var(--dim);
+      max-width: 32rem;
+      margin: 0 auto;
+    }
+
+    .hero-logo {
+      width: min(120px, 32vw);
+      height: auto;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+    }
+
+    /* Dashboard chrome (Timberline portfolio style) */
+    .dash-block {
+      margin-bottom: 56px;
+      scroll-margin-top: 88px;
+    }
+
+    .share-footer-tip {
+      margin-top: 14px;
+      font-size: 0.72rem;
+      color: var(--dim);
+      line-height: 1.45;
+      max-width: 36rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .reading-guide {
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 22px 24px 24px;
+      margin-bottom: 44px;
+    }
+
+    .reading-guide h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 14px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reading-guide h2::before {
+      content: "";
+      width: 4px;
+      height: 1.1em;
+      background: linear-gradient(180deg, var(--chart-green), var(--chart-blue));
+      border-radius: 2px;
+    }
+
+    .reading-guide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px 24px;
+    }
+
+    @media (max-width: 900px) {
+      .reading-guide-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .reading-guide h3 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--chart-blue);
+      margin: 0 0 8px 0;
+    }
+
+    .reading-guide p,
+    .reading-guide li {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .reading-guide ul {
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+
+    .reading-guide li {
+      margin-bottom: 6px;
+    }
+
+    .reading-guide strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .reading-guide a {
+      color: var(--chart-blue);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(66, 153, 225, 0.35);
+    }
+
+    .reading-guide a:hover {
+      color: #68d391;
+      border-bottom-color: rgba(104, 211, 145, 0.5);
+    }
+
+    .micro-hint {
+      font-size: 0.74rem;
+      color: var(--dim);
+      margin: 10px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid var(--card-border);
+      line-height: 1.5;
+    }
+
+    .micro-hint kbd {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--muted);
+    }
+
+    .labor-charts-row {
+      margin-bottom: 18px;
+    }
+
+    .labor-insight-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .labor-insight-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .labor-rec-panel,
+    .labor-money-panel {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .labor-panel-title {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 4px 0;
+    }
+
+    .labor-rec-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .labor-rec-list li {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .labor-rec-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .labor-rec-list .rec-slot {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--chart-orange);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .labor-rec-list .rec-save {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: #68d391;
+      font-weight: 600;
+    }
+
+    .labor-bleed-meter {
+      margin-top: 4px;
+    }
+
+    .labor-bleed-meter-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      color: var(--dim);
+      margin-bottom: 6px;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 600;
+    }
+
+    .labor-bleed-track {
+      position: relative;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+      overflow: visible;
+    }
+
+    .labor-bleed-fill {
+      height: 100%;
+      width: 0%;
+      max-width: 100%;
+      border-radius: 5px;
+      background: linear-gradient(90deg, rgba(252, 129, 129, 0.35), rgba(252, 129, 129, 0.85));
+      transition: width 0.6s ease;
+    }
+
+    .labor-bleed-marker {
+      position: absolute;
+      top: -4px;
+      width: 3px;
+      height: 30px;
+      margin-left: -1.5px;
+      background: #fff;
+      border-radius: 2px;
+      box-shadow: 0 0 12px rgba(252, 129, 129, 0.8);
+      left: 0%;
+      transition: left 0.6s ease;
+      pointer-events: none;
+    }
+
+    .labor-bleed-total {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fc8181;
+      margin: 14px 0 6px;
+    }
+
+    .labor-bleed-note {
+      font-size: 0.76rem;
+      color: var(--dim);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .stock-status-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 20px;
+      margin-bottom: 14px;
+      font-size: 0.72rem;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .stock-key-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stock-key-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    .stock-key-swatch.runout {
+      background: rgba(245, 158, 11, 0.9);
+      box-shadow: 0 0 0 2px #fbbf24;
+    }
+
+    .stock-key-swatch.ok {
+      background: rgba(56, 178, 172, 0.75);
+    }
+
+    .stock-key-swatch.slow {
+      background: rgba(124, 58, 237, 0.85);
+      box-shadow: 0 0 0 2px #e879f9;
+    }
+
+    .dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .dash-title-group h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 6px 0;
+    }
+
+    .dash-title-group p.sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin: 0;
+      max-width: 36rem;
+    }
+
+    .dash-title-group p.pitch {
+      font-size: 0.92rem;
+      color: var(--text);
+      margin: 12px 0 0;
+      max-width: 40rem;
+    }
+
+    .dash-filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .dash-select {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .dash-select:focus {
+      outline: none;
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 3px rgba(47, 133, 90, 0.25);
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-card {
+      background: linear-gradient(145deg, var(--primary-blue) 0%, #152a4a 100%);
+      border-radius: 12px;
+      padding: 20px 18px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .kpi-card::after {
+      content: "";
+      position: absolute;
+      top: -24px;
+      right: -24px;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .kpi-label {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.55);
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .kpi-delta {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .kpi-delta.up { color: #68d391; }
+    .kpi-delta.down { color: #fc8181; }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .chart-row-equal {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .chart-card h3 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 8px 0;
+    }
+
+    .chart-caption {
+      font-size: 0.78rem;
+      color: var(--dim);
+      line-height: 1.45;
+      margin: 0 0 14px 0;
+      max-width: 36rem;
+    }
+
+    .chart-caption strong {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-height: clamp(200px, 42vw, 300px);
+    }
+
+    .chart-wrap canvas {
+      max-height: 280px;
+    }
+
+    .section-tag {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--chart-blue);
+      margin-bottom: 8px;
+    }
+
+    .cta-strip {
+      margin-top: 48px;
+      padding: 40px 28px;
+      text-align: center;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(26, 54, 93, 0.35) 0%, rgba(15, 17, 24, 0.9) 100%);
+      border: 1px solid var(--card-border);
+    }
+
+    .cta-strip h3 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.35rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .cta-strip p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 28rem;
+      margin: 0 auto 20px;
+    }
+
+    .cta-strip a {
+      display: inline-block;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      color: #fff;
+      background: var(--accent-green);
+      padding: 12px 28px;
+      border-radius: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .cta-strip a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(47, 133, 90, 0.35);
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      border-top: 1px solid var(--card-border);
+      font-size: 0.78rem;
+      color: var(--dim);
+    }
+
+    footer strong {
+      color: var(--muted);
+    }
+
+    .ai-panel {
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 22px;
+      border-left: 3px solid var(--chart-green);
+    }
+
+    .ai-panel h4 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 0.85rem;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .ai-panel p, .ai-panel li {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .ai-panel ul {
+      margin: 10px 0 0 1.1rem;
+    }
+
+    .ai-panel li {
+      margin-bottom: 6px;
+    }
+
+    .ai-panel strong {
+      color: var(--chart-green);
+    }
+
+    @media (max-width: 900px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .chart-row { grid-template-columns: 1fr; }
+      .chart-row-equal { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        padding: 20px 14px 72px;
+      }
+
+      .dash-block {
+        scroll-margin-top: 72px;
+        margin-bottom: 44px;
+      }
+
+      .nav {
+        padding: 10px 14px;
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+      }
+
+      .nav-brand {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .nav-brand span {
+        font-size: 0.72rem;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .nav-links a {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 10px 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.68rem;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.08);
+      }
+
+      .hero {
+        padding: 16px 0 32px;
+        margin-bottom: 28px;
+      }
+
+      .hero p.lead {
+        font-size: 0.98rem;
+        padding: 0 4px;
+      }
+
+      .reading-guide {
+        padding: 18px 16px 20px;
+      }
+
+      .dash-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .dash-filters {
+        flex-direction: column;
+      }
+
+      .dash-select {
+        width: 100%;
+        min-height: 48px;
+        font-size: 16px;
+        padding: 10px 14px;
+      }
+
+      .kpi-card {
+        padding: 16px 14px;
+      }
+
+      .kpi-value {
+        font-size: 1.45rem;
+      }
+
+      .chart-card {
+        padding: 16px 14px;
+      }
+
+      .chart-wrap {
+        min-height: 240px;
+      }
+
+      .chart-wrap canvas {
+        max-height: none;
+      }
+
+      .cta-strip {
+        padding: 28px 18px;
+      }
+
+      .cta-strip a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        width: 100%;
+        max-width: 100%;
+        padding: 14px 20px;
+        box-sizing: border-box;
+      }
+
+      .labor-rec-panel,
+      .labor-money-panel {
+        padding: 16px 14px;
+      }
+
+      .stock-status-key {
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .kpi-row { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #1a202c;
+      }
+      body::before {
+        display: none;
+      }
+      .nav,
+      .cta-strip a {
+        display: none;
+      }
+      .chart-card,
+      .kpi-card,
+      .reading-guide,
+      .ai-panel {
+        break-inside: avoid;
+        border-color: #e2e8f0;
+      }
+      .kpi-card {
+        background: #1a365d;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Section navigation">
+    <div class="nav-brand">
+      <img src="Sticky Wicket Logo.png" alt="Sticky Wicket" />
+      <span>× Analytics preview</span>
+    </div>
+    <div class="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#events">Events</a>
+      <a href="#labor">Labor</a>
+      <a href="#menu">Menu</a>
+      <a href="#inventory">Stock</a>
+      <a href="#market">Market</a>
+      <a href="#briefing">Briefing</a>
+    </div>
+  </nav>
+
+  <div class="shell">
+    <header class="hero">
+      <img src="Sticky Wicket Logo.png" alt="" class="hero-logo" width="120" height="120" role="presentation" decoding="async" />
+      <span class="hero-badge">Interactive concepts · Demo data</span>
+      <h1>Match days, margin, and labor <span class="gradient">in one place.</span></h1>
+      <p class="lead">
+        Below are the same interactive dashboard patterns we ship in our <strong style="color:#fff">Timberline Data</strong> portfolio samples, restyled for a cricket-forward sports bar. Use the filters and hover the charts: this is the experience your team gets after we wire up POS and payroll.
+      </p>
+      <p class="proof">Figures are simulated for Sticky Wicket–shaped storytelling, not a substitute for your books.</p>
+    </header>
+
+    <aside class="reading-guide" aria-labelledby="reading-guide-title">
+      <h2 id="reading-guide-title">Reading this page</h2>
+      <div class="reading-guide-grid">
+        <div>
+          <h3>What you’re looking at</h3>
+          <p>
+            Each block below mirrors a real engagement: KPIs, filters, and Chart.js visuals, the same stack we use in our
+            <a href="https://timberlinedata.tech/portfolio/index.html" target="_blank" rel="noopener" style="color: var(--chart-blue); font-weight: 600">live portfolio samples</a>.
+            Nothing here pulls from your POS; it’s a <strong>vision deck</strong> for how decisions could feel once data is connected.
+          </p>
+        </div>
+        <div>
+          <h3>Terms we use</h3>
+          <ul>
+            <li><strong>Baseline</strong> (events): typical net sales on a comparable day-of-week without a marquee fixture, used to express “lift.”</li>
+            <li><strong>Index</strong> (labor / overview): sales or hours scaled to a common scale so different days compare on one chart (relative, not dollars).</li>
+            <li><strong>Margin index</strong> (menu): contribution vs. your bar’s <em>average</em> line; 100 = average for the period.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>To go live on your numbers</h3>
+          <ul>
+            <li>POS category &amp; item sales (CSV export or API)</li>
+            <li>Payroll or schedule hours by role (for labor match)</li>
+            <li>Optional: inventory / pour data for stock health</li>
+          </ul>
+          <p class="micro-hint">
+            Tip: use the nav to jump sections. <kbd>Hover</kbd> any chart for exact values, same behavior we ship for operators.
+          </p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 1 · Executive-style command center -->
+    <section class="dash-block" id="overview">
+      <div class="section-tag">01 · Owner command center</div>
+      <div class="dash-header">
+        <div class="dash-title-group">
+          <h2>Operations snapshot</h2>
+          <p class="sub">Sticky Wicket · Portland, OR (demo)</p>
+          <p class="pitch">Give ownership one live view of net sales, labor load, and prime cost, so every week starts with clarity instead of spreadsheet archaeology.</p>
+        </div>
+        <div class="dash-filters">
+          <select class="dash-select" id="overviewPeriod" aria-label="Time period">
+            <option value="week">This week</option>
+            <option value="month">This month</option>
+            <option value="quarter">Quarter to date</option>
+          </select>
+          <select class="dash-select" id="overviewDaypart" aria-label="Daypart">
+            <option value="all">All dayparts</option>
+            <option value="brunch">Brunch (Sat–Sun AM)</option>
+            <option value="match">Match window</option>
+            <option value="late">Late night</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">Net sales</div>
+          <div class="kpi-value" id="kpiSales">$48.2k</div>
+          <div class="kpi-delta up" id="kpiSalesD">▲ 6.2% vs prior period</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Labor %</div>
+          <div class="kpi-value" id="kpiLabor">31.4%</div>
+          <div class="kpi-delta down" id="kpiLaborD">▲ 1.1 pp vs target</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Food cost %</div>
+          <div class="kpi-value" id="kpiFood">28.1%</div>
+          <div class="kpi-delta up" id="kpiFoodD">▼ 0.4 pp vs prior</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Prime cost</div>
+          <div class="kpi-value" id="kpiPrime">59.5%</div>
+          <div class="kpi-delta down" id="kpiPrimeD">Target 58%</div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-card">
+          <h3>Daily net sales (indexed)</h3>
+          <p class="chart-caption">Trend shape updates when you change the period; values are on an internal index so weeks of different length still compare.</p>
+          <div class="chart-wrap"><canvas id="chartOverviewLine"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Sales by daypart</h3>
+          <p class="chart-caption">Share of sales by daypart (%). Filter to brunch or match window to see how the mix shifts, useful for open hours and promo timing.</p>
+          <div class="chart-wrap"><canvas id="chartOverviewDonut"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · Event lift -->
+    <section class="dash-block" id="events">
+      <div class="section-tag">02 · Event-linked performance</div>
+      <div class="dash-header">
+        <div class="dash-title-group">
+          <h2>What actually fills the room</h2>
+          <p class="pitch">Tie POS history to match nights, tournament windows, and in-house nights like Drag Bingo or Trivia so marketing, staffing, and purchasing move with the calendar, not guesswork.</p>
+        </div>
+        <div class="dash-filters">
+          <select class="dash-select" id="eventSport" aria-label="Sport filter">
+            <option value="all">All sports</option>
+            <option value="cricket">Cricket</option>
+            <option value="rugby">Rugby</option>
+            <option value="soccer">Soccer</option>
+          </select>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Revenue lift vs. baseline (last 90 days)</h3>
+        <p class="chart-caption">
+          <strong>Lift</strong> = how much net sales exceeded baseline for that event type, expressed as a rough %.
+          Includes programmed nights (e.g. <strong>Drag Bingo</strong>, <strong>Trivia Night</strong>) alongside sports. Bars in cooler tones are still positive but closer to an ordinary night. “No major fixture” anchors near 0% by design.
+        </p>
+        <div class="chart-wrap"><canvas id="chartEvents"></canvas></div>
+      </div>
+    </section>
+
+    <!-- 3 · Labor vs demand -->
+    <section class="dash-block" id="labor">
+      <div class="section-tag">03 · Labor vs. demand</div>
+      <div class="dash-header">
+        <div class="dash-title-group">
+          <h2>Right-size every shift</h2>
+          <p class="pitch">Stack scheduled labor against net sales by hour, then turn gaps into concrete cut/add cues and a modeled dollar bleed when labor runs hotter than demand.</p>
+        </div>
+        <div class="dash-filters">
+          <select class="dash-select" id="laborDay" aria-label="Day type">
+            <option value="sat">Saturday (match heavy)</option>
+            <option value="wed">Wednesday (midweek)</option>
+          </select>
+        </div>
+      </div>
+      <div class="chart-row-equal labor-charts-row">
+        <div class="chart-card">
+          <h3>Hourly sales vs. labor (same index)</h3>
+          <p class="chart-caption">
+            <strong>Green</strong> = sales index; <strong>amber</strong> = scheduled labor hours index. Where amber sits above green, you are paying for capacity you are not selling through (validated against wage rules and minimum coverage in a live build).
+          </p>
+          <div class="chart-wrap"><canvas id="chartLabor"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Overstaff gap by hour</h3>
+          <p class="chart-caption">
+            Only hours where <strong>labor &gt; sales</strong>. Bar length = index gap; dollar tags use a demo <strong>$22</strong> blended rate × assumed hours in that bucket (illustrative).
+          </p>
+          <div class="chart-wrap"><canvas id="chartLaborGap"></canvas></div>
+        </div>
+      </div>
+      <div class="labor-insight-grid">
+        <div class="labor-rec-panel">
+          <h3 class="labor-panel-title">Shift optimizer (demo recommendations)</h3>
+          <p class="chart-caption" style="margin-bottom: 12px">What a production system would surface after your rules (min coverage, opener/closer pairs, liquor service) are wired in.</p>
+          <ul class="labor-rec-list" id="laborRecList"></ul>
+        </div>
+        <div class="labor-money-panel">
+          <h3 class="labor-panel-title">Modeled weekly bleed from misaligned hours</h3>
+          <p class="chart-caption" style="margin-bottom: 12px">Sum of the red bars above, scaled to one week on this day pattern. Replace the blended rate with your payroll average to tighten the number.</p>
+          <div class="labor-bleed-meter" aria-label="Estimated weekly overstaff cost visualization">
+            <div class="labor-bleed-meter-labels">
+              <span>$0</span>
+              <span id="laborBleedMidLabel">$300</span>
+              <span id="laborBleedMaxLabel">$600+</span>
+            </div>
+            <div class="labor-bleed-track">
+              <div class="labor-bleed-fill" id="laborBleedFill"></div>
+              <div class="labor-bleed-marker" id="laborBleedMarker" title="Your modeled position"></div>
+            </div>
+            <p class="labor-bleed-total" id="laborBleedTotal"></p>
+            <p class="labor-bleed-note" id="laborBleedNote"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · Menu mix -->
+    <section class="dash-block" id="menu">
+      <div class="section-tag">04 · Menu &amp; margin</div>
+      <div class="dash-header">
+        <div class="dash-title-group">
+          <h2>Promote what pays</h2>
+          <p class="pitch">Stars, workhorses, and dogs by contribution margin, so chalkboards and specials reinforce profit, not just buzz.</p>
+        </div>
+      </div>
+      <div class="chart-row-equal">
+        <div class="chart-card">
+          <h3>Contribution margin by category</h3>
+          <p class="chart-caption" style="margin-bottom: 14px">
+            Estimated <strong>margin dollars per 100 covers</strong> by category (demo). Same six categories as the bubble chart; each has a <strong>unique color</strong> in both views.
+          </p>
+          <div class="chart-wrap"><canvas id="chartMenuBar"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Mix vs. margin (bubble)</h3>
+          <p class="chart-caption">
+            <strong>One bubble per category</strong>, same labels and distinct colors as the bars on the left.
+            <strong>Horizontal</strong> = share of food sales (mix %).
+            <strong>Vertical</strong> = margin index vs. bar average (100 = average).
+            <strong>Size</strong> ≈ relative sales volume. Legend below maps color → category.
+          </p>
+          <div class="chart-wrap"><canvas id="chartMenuBubble"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · Inventory -->
+    <section class="dash-block" id="inventory">
+      <div class="section-tag">05 · Inventory health</div>
+      <div class="dash-header">
+        <div class="dash-title-group">
+          <h2>Cash on the shelf</h2>
+          <p class="pitch">Days of cover and slow movers, especially imports and rotating taps, so capital is not trapped before the next big fixture.</p>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Days of cover with run-out and slow-stock bands</h3>
+        <p class="chart-caption">
+          <strong>Days of cover</strong> = on-hand ÷ average daily usage (demo). <strong>Amber line (~5d)</strong>: at or below means reorder or you risk a stockout. <strong>Violet line (~18d)</strong>: at or above means cash and cooler space sitting too long (promo, reduce next order, or rotate the tap).
+        </p>
+        <div class="stock-status-key" aria-hidden="true">
+          <span class="stock-key-item"><span class="stock-key-swatch runout"></span> Run-out risk (≤5d)</span>
+          <span class="stock-key-item"><span class="stock-key-swatch ok"></span> In band</span>
+          <span class="stock-key-item"><span class="stock-key-swatch slow"></span> Slow / excess (≥18d)</span>
+        </div>
+        <div class="chart-wrap"><canvas id="chartStock"></canvas></div>
+      </div>
+    </section>
+
+    <!-- 6 · Market -->
+    <section class="dash-block" id="market">
+      <div class="section-tag">06 · Peer positioning</div>
+      <div class="dash-header">
+        <div class="dash-title-group">
+          <h2>Know the neighborhood set</h2>
+          <p class="pitch">A structured lens on nearby sports bars (price band, review themes, hours) so Sticky Wicket’s positioning stays intentional.</p>
+        </div>
+      </div>
+      <div class="chart-row-equal">
+        <div class="chart-card">
+          <h3>Attribute comparison (indexed)</h3>
+          <p class="chart-caption">
+            Subjective scores from review text + public positioning (demo). <strong>Sticky Wicket</strong> vs. blended <strong>peer set</strong>, useful for “where we own the story” vs. “where we’re undifferentiated.”
+          </p>
+          <div class="chart-wrap"><canvas id="chartRadar"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Estimated $ / cover vs. Google rating</h3>
+          <p class="chart-caption">
+            Each point is a <strong>named venue</strong> (hover). Bubble size ≈ rough revenue scale. Estimates from public menus and typical check patterns, not audited financials.
+          </p>
+          <div class="chart-wrap"><canvas id="chartScatter"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · Briefing -->
+    <section class="dash-block" id="briefing">
+      <div class="section-tag">07 · Automated weekly briefing</div>
+      <div class="dash-header">
+        <div class="dash-title-group">
+          <h2>Plain-English “what changed”</h2>
+          <p class="pitch">After dashboards go live, layer a weekly narrative (drivers, anomalies, what to watch next) so leadership spends minutes, not hours, in the numbers.</p>
+        </div>
+      </div>
+      <div class="chart-row">
+        <div class="ai-panel">
+          <h4>Sample briefing excerpt</h4>
+          <p><strong>Headline:</strong> Labor % rose on slower Tue–Wed evenings while weekend brunch food margin improved week over week.</p>
+          <ul>
+            <li><strong>Driver:</strong> +2.4 hrs average on closing shifts vs. prior month with flat midweek sales.</li>
+            <li><strong>Bright spot:</strong> Pasty &amp; pub plate mix up 8% during Sat–Sun breakfast opens.</li>
+            <li><strong>Watch next:</strong> IPL window: compare staffing to last season’s comparable fixtures.</li>
+          </ul>
+        </div>
+        <div class="chart-card">
+          <h3>Prime cost trend (rolling 8 weeks)</h3>
+          <p class="chart-caption">Same prime-cost definition as the snapshot above (labor % + COGS). Dashed line = internal target; alerts can fire when you cross it two weeks in a row.</p>
+          <div class="chart-wrap"><canvas id="chartBrief"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta-strip">
+      <h3>Want this on your POS and payroll, not demo data?</h3>
+      <p>
+        We connect the same Chart.js and BI patterns you see here to your exports or APIs, usually starting with a <strong>two-week</strong> pilot dashboard, then layering forecasts, inventory, and briefings as you are ready.
+      </p>
+      <a href="https://timberlinedata.tech/contact.html" target="_blank" rel="noopener">Start a conversation · Timberline Data</a>
+    </div>
+
+    <footer>
+      <p>
+        Interactive previews styled after <strong>Timberline Data</strong> portfolio dashboards (Chart.js, Montserrat / Open Sans).
+        Analytics outputs are <strong>decision-support only</strong>; operating and staffing choices remain with ownership.
+      </p>
+      <p style="margin-top: 10px">Prepared for <strong>Sticky Wicket</strong> · Portland, OR · © 2026</p>
+      <p class="share-footer-tip">
+        <strong>Sharing:</strong> SMS and chat are bad for raw HTML length. Send this file as an attachment, zip it with the logo, or upload both to a host and text the link. (See the note at the very top of the file source for a fuller checklist.)
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    const COLORS = {
+      green: "#48bb78",
+      greenLight: "rgba(72, 187, 120, 0.2)",
+      blue: "#4299e1",
+      blueLight: "rgba(66, 153, 225, 0.2)",
+      navy: "#1a365d",
+      orange: "#ed8936",
+      orangeLight: "rgba(237, 137, 54, 0.2)",
+      purple: "#9f7aea",
+      purpleLight: "rgba(159, 122, 234, 0.45)",
+      teal: "#38b2ac",
+      tealLight: "rgba(56, 178, 172, 0.5)",
+      pink: "#ed64a6",
+      pinkLight: "rgba(237, 100, 166, 0.5)",
+      gray: "#a0aec0",
+      grayLight: "rgba(160, 174, 192, 0.25)",
+      red: "#fc8181"
+    };
+
+    const tooltipTheme = {
+      backgroundColor: "#1a365d",
+      titleFont: { family: "Montserrat", weight: "700", size: 12 },
+      bodyFont: { family: "Open Sans", size: 12 },
+      padding: 12,
+      cornerRadius: 8,
+      borderColor: "rgba(255,255,255,0.1)",
+      borderWidth: 1
+    };
+
+    const scalesDark = {
+      x: {
+        ticks: { color: "#94a3b8", font: { family: "Open Sans", size: 11 } },
+        grid: { color: "rgba(255,255,255,0.06)" }
+      },
+      y: {
+        ticks: { color: "#94a3b8", font: { family: "Open Sans", size: 11 } },
+        grid: { color: "rgba(255,255,255,0.06)" }
+      }
+    };
+
+    const charts = {};
+
+    function destroyChart(id) {
+      if (charts[id]) {
+        charts[id].destroy();
+        delete charts[id];
+      }
+    }
+
+    /* Overview */
+    const OVERVIEW = {
+      week: {
+        kpis: { sales: "$11.2k", salesD: "▲ 4.1% vs prior week", labor: "30.8%", laborD: "▼ 0.3 pp vs prior", food: "27.6%", foodD: "▼ 0.2 pp", prime: "58.4%", primeD: "▲ Inside target band" },
+        line: { labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], data: [72, 68, 74, 81, 95, 118, 102] },
+        donut: { labels: ["Lunch", "Match window", "Dinner", "Late"], data: [18, 38, 32, 12] }
+      },
+      month: {
+        kpis: { sales: "$48.2k", salesD: "▲ 6.2% vs prior period", labor: "31.4%", laborD: "▲ 1.1 pp vs target", food: "28.1%", foodD: "▼ 0.4 pp vs prior", prime: "59.5%", primeD: "Target 58%" },
+        line: { labels: ["W1", "W2", "W3", "W4"], data: [88, 92, 105, 98] },
+        donut: { labels: ["Brunch", "Match window", "Dinner", "Late"], data: [22, 36, 30, 12] }
+      },
+      quarter: {
+        kpis: { sales: "$142k", salesD: "▲ 9.8% vs prior quarter", labor: "30.1%", laborD: "▼ 0.5 pp vs prior Q", food: "28.4%", foodD: "Flat YoY", prime: "58.5%", primeD: "▼ 0.3 pp vs prior Q" },
+        line: { labels: ["Jan", "Feb", "Mar"], data: [92, 88, 105] },
+        donut: { labels: ["Brunch", "Match window", "Dinner", "Late"], data: [20, 40, 30, 10] }
+      }
+    };
+
+    const DAYPART_ADJ = {
+      all: { sales: null, donut: null },
+      brunch: { sales: { week: "$3.1k", month: "$12.4k", quarter: "$36k" }, donut: [45, 15, 30, 10] },
+      match: { sales: { week: "$4.8k", month: "$19.2k", quarter: "$58k" }, donut: [10, 55, 28, 7] },
+      late: { sales: { week: "$1.2k", month: "$4.9k", quarter: "$14k" }, donut: [5, 15, 25, 55] }
+    };
+
+    function buildOverview() {
+      const period = document.getElementById("overviewPeriod").value;
+      const daypart = document.getElementById("overviewDaypart").value;
+      const base = OVERVIEW[period];
+      let kpis = { ...base.kpis };
+
+      if (daypart !== "all" && DAYPART_ADJ[daypart].sales) {
+        const s = DAYPART_ADJ[daypart].sales[period];
+        kpis.sales = s;
+        kpis.salesD = "Segment view";
+      }
+
+      document.getElementById("kpiSales").textContent = kpis.sales;
+      document.getElementById("kpiSalesD").textContent = kpis.salesD;
+      document.getElementById("kpiLabor").textContent = kpis.labor;
+      document.getElementById("kpiLaborD").textContent = kpis.laborD;
+      {
+        const ld = kpis.laborD;
+        const good = ld.includes("▼") || ld.includes("Inside") || ld.includes("below");
+        document.getElementById("kpiLaborD").className = "kpi-delta " + (good ? "up" : "down");
+      }
+      document.getElementById("kpiFood").textContent = kpis.food;
+      document.getElementById("kpiFoodD").textContent = kpis.foodD;
+      document.getElementById("kpiPrime").textContent = kpis.prime;
+      document.getElementById("kpiPrimeD").textContent = kpis.primeD;
+
+      const donutData = daypart !== "all" ? DAYPART_ADJ[daypart].donut : base.donut.data;
+
+      destroyChart("overviewLine");
+      charts.overviewLine = new Chart(document.getElementById("chartOverviewLine"), {
+        type: "line",
+        data: {
+          labels: base.line.labels,
+          datasets: [{
+            label: "Net sales index",
+            data: base.line.data,
+            borderColor: COLORS.green,
+            backgroundColor: COLORS.greenLight,
+            fill: true,
+            tension: 0.35,
+            pointRadius: 4,
+            pointHoverRadius: 7,
+            borderWidth: 2.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: tooltipTheme
+          },
+          scales: scalesDark
+        }
+      });
+
+      destroyChart("overviewDonut");
+      charts.overviewDonut = new Chart(document.getElementById("chartOverviewDonut"), {
+        type: "doughnut",
+        data: {
+          labels: base.donut.labels,
+          datasets: [{
+            data: donutData,
+            backgroundColor: [COLORS.green, COLORS.blue, COLORS.orange, COLORS.purple],
+            borderWidth: 0,
+            hoverOffset: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "65%",
+          plugins: {
+            tooltip: { ...tooltipTheme, callbacks: { label: (c) => " " + c.label + ": " + c.parsed + "%" } },
+            legend: {
+              position: "bottom",
+              labels: { color: "#94a3b8", font: { family: "Montserrat", size: 10 }, usePointStyle: true, padding: 12 }
+            }
+          }
+        }
+      });
+    }
+
+    /* Events */
+    const EVENT_SETS = {
+      all: {
+        labels: [
+          "Test cricket",
+          "T20 / IPL",
+          "Drag Bingo",
+          "Trivia night",
+          "Six Nations",
+          "UCL night",
+          "MLS / PTFC",
+          "No major fixture"
+        ],
+        lift: [34, 28, 18, 14, 22, 18, 14, 0]
+      },
+      cricket: {
+        labels: ["Test D1–2", "Test D3–5", "T20 / IPL", "ODI", "Highlights only"],
+        lift: [38, 32, 42, 24, 8]
+      },
+      rugby: {
+        labels: ["Six Nations", "Rugby WC", "Club weekend", "Midweek"], lift: [26, 30, 18, 10]
+      },
+      soccer: {
+        labels: ["UCL", "EPL morning", "MLS", "World Cup"], lift: [20, 24, 12, 45]
+      }
+    };
+
+    function buildEvents() {
+      const sport = document.getElementById("eventSport").value;
+      const d = EVENT_SETS[sport];
+      destroyChart("events");
+      charts.events = new Chart(document.getElementById("chartEvents"), {
+        type: "bar",
+        data: {
+          labels: d.labels,
+          datasets: [{
+            label: "Lift vs. baseline",
+            data: d.lift,
+            backgroundColor: d.lift.map((v) => (v >= 25 ? COLORS.green : v >= 12 ? COLORS.blue : COLORS.grayLight)),
+            borderRadius: 6,
+            barPercentage: 0.65
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { ...tooltipTheme, callbacks: { label: (c) => " " + c.parsed.y + "% lift" } }
+          },
+          scales: {
+            ...scalesDark,
+            y: {
+              ...scalesDark.y,
+              beginAtZero: true,
+              ticks: { ...scalesDark.y.ticks, callback: (v) => v + "%" }
+            }
+          }
+        }
+      });
+    }
+
+    /* Labor: sales vs labor + gap chart + recommendation copy + bleed meter */
+    const LABOR_BLEED_CAP = 620;
+    const LABOR_DEMO_RATE = 22;
+    const LABOR_HOURS_PER_BUCKET = 2.25;
+
+    const LABOR = {
+      sat: {
+        labels: ["11a", "1p", "3p", "5p", "7p", "9p"],
+        sales: [28, 55, 100, 88, 72, 48],
+        labor: [45, 38, 42, 48, 52, 65],
+        recs: [
+          {
+            slot: "9p close",
+            text: "Labor index sits 17 points above sales. Recommendation: stage one fewer FOH closer after 8:30 when no late fixture is booked.",
+            saveRange: "Modeled trim: ~$95–$150 per heavy Saturday"
+          },
+          {
+            slot: "11a–1p",
+            text: "Sales build faster than labor ahead of kickoff. Recommendation: hold opens steady; add bar back only if brunch + match overlap is on the books.",
+            saveRange: "Priority: protect throughput, not cuts"
+          },
+          {
+            slot: "3p–7p match core",
+            text: "Labor tracks sales within a healthy band. Recommendation: no structural change; re-check if you add a second screen or patio.",
+            saveRange: "No trim flagged"
+          }
+        ],
+        bleedNote:
+          "Illustrative only: gap × a $22 blended rate × hours represented by each bucket, summed across the day and scaled as one week on this Saturday pattern. Your PMIX and wage tiers replace this in production."
+      },
+      wed: {
+        labels: ["4p", "5p", "6p", "7p", "8p", "9p"],
+        sales: [42, 58, 72, 68, 55, 38],
+        labor: [52, 48, 46, 50, 48, 55],
+        recs: [
+          {
+            slot: "4p–5p opens",
+            text: "Labor leads sales by a full tier while the room is still warming up. Recommendation: one fewer opener until the after-work push hits.",
+            saveRange: "Modeled trim: ~$40–$70 per Wednesday"
+          },
+          {
+            slot: "8p–9p wind-down",
+            text: "Gap reopens at close. Recommendation: align last cut with last-call and glass collection so you are not paying through an empty rail.",
+            saveRange: "Modeled trim: ~$25–$45 per Wednesday"
+          }
+        ],
+        bleedNote:
+          "Midweek dollars look smaller than Saturday, but the same logic runs 52 weeks a year. Tie recommendations to your actual clock times and union or OLCC rules when we go live."
+      }
+    };
+
+    function buildLabor() {
+      const day = document.getElementById("laborDay").value;
+      const d = LABOR[day];
+      const excess = d.sales.map((s, i) => Math.max(0, d.labor[i] - s));
+      const slotDollars = excess.map((e) => Math.round(e * LABOR_DEMO_RATE * LABOR_HOURS_PER_BUCKET * 0.38));
+      const totalBleed = slotDollars.reduce((a, b) => a + b, 0);
+
+      const recList = document.getElementById("laborRecList");
+      recList.innerHTML = d.recs
+        .map(
+          (r) =>
+            `<li><span class="rec-slot">${r.slot}</span>${r.text}<span class="rec-save">${r.saveRange}</span></li>`
+        )
+        .join("");
+
+      const pct = Math.min(100, (totalBleed / LABOR_BLEED_CAP) * 100);
+      document.getElementById("laborBleedFill").style.width = pct + "%";
+      document.getElementById("laborBleedMarker").style.left = pct + "%";
+      document.getElementById("laborBleedTotal").textContent =
+        "Modeled weekly bleed (this day pattern): ~$" + totalBleed.toLocaleString();
+      document.getElementById("laborBleedNote").textContent = d.bleedNote;
+      document.getElementById("laborBleedMidLabel").textContent = "$" + Math.round(LABOR_BLEED_CAP / 2);
+      document.getElementById("laborBleedMaxLabel").textContent = "$" + LABOR_BLEED_CAP + "+";
+
+      destroyChart("labor");
+      charts.labor = new Chart(document.getElementById("chartLabor"), {
+        type: "bar",
+        data: {
+          labels: d.labels,
+          datasets: [
+            {
+              label: "Sales index",
+              data: d.sales,
+              backgroundColor: COLORS.green,
+              borderRadius: 4,
+              barPercentage: 0.72
+            },
+            {
+              label: "Labor hours index",
+              data: d.labor,
+              backgroundColor: COLORS.orangeLight,
+              borderColor: COLORS.orange,
+              borderWidth: 2,
+              borderRadius: 4,
+              barPercentage: 0.72
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: tooltipTheme,
+            legend: {
+              labels: { color: "#94a3b8", font: { family: "Montserrat", size: 11 }, usePointStyle: true, pointStyle: "circle" }
+            }
+          },
+          scales: {
+            ...scalesDark,
+            y: { ...scalesDark.y, beginAtZero: true, max: 110 }
+          }
+        }
+      });
+
+      destroyChart("laborGap");
+      const gapColors = excess.map((e) =>
+        e >= 15 ? "rgba(252, 129, 129, 0.9)" : e > 0 ? "rgba(237, 137, 54, 0.85)" : "rgba(100, 116, 139, 0.25)"
+      );
+      charts.laborGap = new Chart(document.getElementById("chartLaborGap"), {
+        type: "bar",
+        data: {
+          labels: d.labels,
+          datasets: [
+            {
+              label: "Labor − sales (index pts)",
+              data: excess,
+              backgroundColor: gapColors,
+              borderRadius: 4,
+              barPercentage: 0.7
+            }
+          ]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              ...tooltipTheme,
+              callbacks: {
+                label: (ctx) => {
+                  const i = ctx.dataIndex;
+                  const e = excess[i];
+                  if (e <= 0) return " Aligned (no overstaff gap)";
+                  return [
+                    " Overstaff gap: " + e + " index pts",
+                    " Modeled $ in bucket: ~$" + slotDollars[i] + "/wk (demo)"
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            ...scalesDark,
+            x: {
+              ...scalesDark.x,
+              beginAtZero: true,
+              title: { display: true, text: "Index points (labor − sales)", color: "#64748b" },
+              max: Math.max(22, Math.ceil(Math.max(...excess, 5) * 1.15))
+            }
+          }
+        }
+      });
+    }
+
+    /* Menu: shared category rows for bar + bubble */
+    function getMenuCategoryDemo() {
+      return [
+        { label: "Pasties & pies", marginPer100: 420, mix: 12, marginIdx: 118, r: 14, fill: "rgba(72, 187, 120, 0.5)", stroke: COLORS.green },
+        { label: "Mains", marginPer100: 310, mix: 11, marginIdx: 98, r: 11, fill: "rgba(66, 153, 225, 0.5)", stroke: COLORS.blue },
+        { label: "Sides", marginPer100: 180, mix: 6, marginIdx: 76, r: 7, fill: "rgba(237, 137, 54, 0.5)", stroke: COLORS.orange },
+        { label: "Bar snacks", marginPer100: 240, mix: 8, marginIdx: 108, r: 8, fill: COLORS.purpleLight, stroke: COLORS.purple },
+        { label: "Draught", marginPer100: 560, mix: 14, marginIdx: 102, r: 9, fill: COLORS.tealLight, stroke: COLORS.teal },
+        { label: "Cocktails / wine", marginPer100: 380, mix: 9, marginIdx: 112, r: 10, fill: COLORS.pinkLight, stroke: COLORS.pink }
+      ];
+    }
+
+    function buildMenu() {
+      const rows = getMenuCategoryDemo();
+
+      destroyChart("menuBar");
+      charts.menuBar = new Chart(document.getElementById("chartMenuBar"), {
+        type: "bar",
+        data: {
+          labels: rows.map((r) => r.label),
+          datasets: [{
+            label: "Margin $ / 100 covers",
+            data: rows.map((r) => r.marginPer100),
+            backgroundColor: rows.map((r) => r.stroke),
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: tooltipTheme },
+          scales: { ...scalesDark, x: { ...scalesDark.x, beginAtZero: true } }
+        }
+      });
+
+      destroyChart("menuBubble");
+      charts.menuBubble = new Chart(document.getElementById("chartMenuBubble"), {
+        type: "bubble",
+        data: {
+          datasets: rows.map((row) => ({
+            label: row.label,
+            data: [{ x: row.mix, y: row.marginIdx, r: row.r }],
+            backgroundColor: row.fill,
+            borderColor: row.stroke,
+            borderWidth: 2
+          }))
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              ...tooltipTheme,
+              callbacks: {
+                title: (items) => (items.length ? items[0].dataset.label : ""),
+                label: (c) => {
+                  const p = c.raw;
+                  return [
+                    " Mix (share of food sales): " + p.x + "%",
+                    " Margin index (100 = bar average): " + p.y,
+                    " Bubble size: sales volume (relative)"
+                  ];
+                }
+              }
+            },
+            legend: {
+              display: true,
+              position: "bottom",
+              labels: {
+                color: "#94a3b8",
+                font: { family: "Montserrat", size: 10, weight: "600" },
+                usePointStyle: true,
+                pointStyle: "circle",
+                padding: 14,
+                boxWidth: 8,
+                boxHeight: 8
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: "Mix % of food sales", color: "#64748b" },
+              ...scalesDark.x,
+              min: 0,
+              max: 18,
+              ticks: { ...scalesDark.x.ticks, callback: (v) => v + "%" }
+            },
+            y: {
+              title: { display: true, text: "Margin index (100 = bar average)", color: "#64748b" },
+              ...scalesDark.y,
+              min: 65,
+              max: 128
+            }
+          }
+        }
+      });
+    }
+
+    /* Stock: bands at 5d (run-out) and 18d (slow), bar styling by status */
+    const STOCK_BAND_LOW = 5;
+    const STOCK_BAND_HIGH = 18;
+
+    function stockSkuStyle(days) {
+      if (days <= STOCK_BAND_LOW) {
+        return {
+          fill: "rgba(245, 158, 11, 0.88)",
+          stroke: "#fbbf24",
+          borderW: 3,
+          tag: "Run-out risk: reorder or risk stockout"
+        };
+      }
+      if (days >= STOCK_BAND_HIGH) {
+        return {
+          fill: "rgba(124, 58, 237, 0.82)",
+          stroke: "#e879f9",
+          borderW: 3,
+          tag: "Slow / excess: cash tied up too long"
+        };
+      }
+      return {
+        fill: "rgba(56, 178, 172, 0.72)",
+        stroke: COLORS.teal,
+        borderW: 1,
+        tag: "In band"
+      };
+    }
+
+    function buildStock() {
+      const skus = [
+        { label: "House IPA", days: 12 },
+        { label: "UK import ale", days: 4 },
+        { label: "Cider (rotating)", days: 20 },
+        { label: "Frozen pastry", days: 8 },
+        { label: "Fry oil", days: 22 },
+        { label: "Wine by glass", days: 15 }
+      ];
+      const n = skus.length;
+      const styles = skus.map((s) => stockSkuStyle(s.days));
+
+      destroyChart("stock");
+      charts.stock = new Chart(document.getElementById("chartStock"), {
+        type: "bar",
+        data: {
+          labels: skus.map((s) => s.label),
+          datasets: [
+            {
+              type: "line",
+              label: "Run-out floor (~" + STOCK_BAND_LOW + "d)",
+              data: Array(n).fill(STOCK_BAND_LOW),
+              borderColor: "#fbbf24",
+              borderWidth: 2,
+              borderDash: [7, 5],
+              pointRadius: 0,
+              fill: false,
+              order: 0
+            },
+            {
+              type: "line",
+              label: "Slow-stock line (~" + STOCK_BAND_HIGH + "d)",
+              data: Array(n).fill(STOCK_BAND_HIGH),
+              borderColor: "#c084fc",
+              borderWidth: 2,
+              borderDash: [4, 4],
+              pointRadius: 0,
+              fill: false,
+              order: 0
+            },
+            {
+              type: "bar",
+              label: "Days of cover",
+              data: skus.map((s) => s.days),
+              backgroundColor: styles.map((st) => st.fill),
+              borderColor: styles.map((st) => st.stroke),
+              borderWidth: styles.map((st) => st.borderW),
+              borderRadius: 5,
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              ...tooltipTheme,
+              callbacks: {
+                afterLabel: (ctx) => {
+                  if (ctx.datasetIndex !== 2) return "";
+                  const i = ctx.dataIndex;
+                  return styles[i].tag;
+                }
+              }
+            },
+            legend: {
+              position: "bottom",
+              labels: {
+                color: "#94a3b8",
+                font: { family: "Montserrat", size: 9, weight: "600" },
+                usePointStyle: true,
+                pointStyle: "line",
+                padding: 12,
+                filter: (item) => item.datasetIndex < 2
+              }
+            }
+          },
+          scales: {
+            ...scalesDark,
+            y: {
+              ...scalesDark.y,
+              beginAtZero: true,
+              max: 26,
+              title: { display: true, text: "Days of cover", color: "#64748b" }
+            }
+          }
+        }
+      });
+    }
+
+    /* Market */
+    function buildMarket() {
+      destroyChart("radar");
+      charts.radar = new Chart(document.getElementById("chartRadar"), {
+        type: "radar",
+        data: {
+          labels: ["Value", "Hours / kitchen", "Sports breadth", "Review vibe", "Event marketing", "Late night"],
+          datasets: [
+            {
+              label: "Sticky Wicket",
+              data: [82, 88, 95, 91, 86, 78],
+              borderColor: COLORS.green,
+              backgroundColor: "rgba(72, 187, 120, 0.25)",
+              pointBackgroundColor: COLORS.green
+            },
+            {
+              label: "Peer avg (3)",
+              data: [75, 80, 72, 84, 70, 85],
+              borderColor: COLORS.gray,
+              backgroundColor: "rgba(160, 174, 192, 0.15)",
+              pointBackgroundColor: COLORS.gray
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { tooltip: tooltipTheme },
+          scales: {
+            r: {
+              angleLines: { color: "rgba(255,255,255,0.08)" },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              pointLabels: { color: "#94a3b8", font: { size: 10 } },
+              ticks: { display: false, backdropColor: "transparent" },
+              suggestedMin: 50,
+              suggestedMax: 100
+            }
+          }
+        }
+      });
+
+      destroyChart("scatter");
+      const peerBubbles = [
+        { label: "Sticky Wicket", x: 4.6, y: 38, r: 14, fill: "rgba(72, 187, 120, 0.55)", stroke: COLORS.green },
+        { label: "Rivalry Taproom (demo)", x: 4.2, y: 32, r: 10, fill: "rgba(66, 153, 225, 0.45)", stroke: COLORS.blue },
+        { label: "North End Pub (demo)", x: 4.4, y: 35, r: 10, fill: "rgba(237, 137, 54, 0.45)", stroke: COLORS.orange },
+        { label: "Waterfront Sports Bar (demo)", x: 4.8, y: 41, r: 17, fill: COLORS.purpleLight, stroke: COLORS.purple }
+      ];
+      charts.scatter = new Chart(document.getElementById("chartScatter"), {
+        type: "bubble",
+        data: {
+          datasets: peerBubbles.map((v) => ({
+            label: v.label,
+            data: [{ x: v.x, y: v.y, r: v.r }],
+            backgroundColor: v.fill,
+            borderColor: v.stroke,
+            borderWidth: 2
+          }))
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              ...tooltipTheme,
+              callbacks: {
+                title: (items) => (items[0] ? items[0].dataset.label : ""),
+                label: (c) => [
+                  " Google rating: " + c.parsed.x,
+                  " Est. $ / cover: $" + c.parsed.y,
+                  " Bubble size: rough revenue scale (demo)"
+                ]
+              }
+            },
+            legend: {
+              display: true,
+              position: "bottom",
+              labels: {
+                color: "#94a3b8",
+                font: { family: "Montserrat", size: 9, weight: "600" },
+                usePointStyle: true,
+                pointStyle: "circle",
+                padding: 10,
+                boxWidth: 8
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: "Google rating", color: "#64748b" },
+              ...scalesDark.x,
+              min: 4,
+              max: 5
+            },
+            y: {
+              title: { display: true, text: "Est. $ / cover", color: "#64748b" },
+              ...scalesDark.y,
+              min: 28,
+              max: 46
+            }
+          }
+        }
+      });
+    }
+
+    /* Briefing trend */
+    function buildBrief() {
+      destroyChart("brief");
+      charts.brief = new Chart(document.getElementById("chartBrief"), {
+        type: "line",
+        data: {
+          labels: ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"],
+          datasets: [
+            {
+              label: "Prime cost %",
+              data: [60.2, 59.8, 60.5, 59.1, 58.9, 59.4, 59.8, 59.5],
+              borderColor: COLORS.orange,
+              backgroundColor: COLORS.orangeLight,
+              fill: true,
+              tension: 0.35,
+              borderWidth: 2
+            },
+            {
+              label: "Target",
+              data: [58, 58, 58, 58, 58, 58, 58, 58],
+              borderColor: COLORS.gray,
+              borderDash: [6, 4],
+              pointRadius: 0,
+              borderWidth: 1.5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { tooltip: tooltipTheme },
+          scales: {
+            ...scalesDark,
+            y: {
+              ...scalesDark.y,
+              min: 56,
+              max: 62,
+              ticks: { ...scalesDark.y.ticks, callback: (v) => v + "%" }
+            }
+          }
+        }
+      });
+    }
+
+    function init() {
+      buildOverview();
+      buildEvents();
+      buildLabor();
+      buildMenu();
+      buildStock();
+      buildMarket();
+      buildBrief();
+
+      document.getElementById("overviewPeriod").addEventListener("change", buildOverview);
+      document.getElementById("overviewDaypart").addEventListener("change", buildOverview);
+      document.getElementById("eventSport").addEventListener("change", buildEvents);
+      document.getElementById("laborDay").addEventListener("change", buildLabor);
+    }
+
+    init();
+
+    let resizeChartsTimer;
+    function resizeAllCharts() {
+      Object.values(charts).forEach((c) => {
+        if (c && typeof c.resize === "function") c.resize();
+      });
+    }
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeChartsTimer);
+      resizeChartsTimer = setTimeout(resizeAllCharts, 120);
+    });
+    window.addEventListener("orientationchange", () => {
+      setTimeout(resizeAllCharts, 350);
+    });
+  </script>
+</body>
+</html>

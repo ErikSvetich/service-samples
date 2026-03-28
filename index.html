@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Service samples | Timberline Data</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1a365d;
+      --green: #2f855a;
+      --bg: #f7fafc;
+      --card: #fff;
+      --border: #e2e8f0;
+      --text: #2d3748;
+      --muted: #718096;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Open Sans", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 48px 20px 80px;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: 1.75rem;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+    }
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    a.card {
+      display: block;
+      text-decoration: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      color: inherit;
+    }
+    a.card:hover {
+      border-color: var(--navy);
+      box-shadow: 0 8px 24px rgba(26, 54, 93, 0.12);
+    }
+    .card h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .card .slug {
+      font-size: 0.75rem;
+      font-family: ui-monospace, monospace;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .card .go {
+      margin-top: 14px;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--green);
+    }
+    footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a {
+      color: var(--navy);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Service samples</h1>
+    <p class="sub">Timberline Data · interactive decks shared with prospects. Each folder is named <code>-client-slug</code>.</p>
+    <div class="cards">
+      <a class="card" href="-sticky-wicket/">
+        <h2>Sticky Wicket</h2>
+        <div class="slug">/-sticky-wicket/</div>
+        <p>Portland sports bar · analytics concept menu (Chart.js demos, dark theme).</p>
+        <div class="go">Open sample →</div>
+      </a>
+    </div>
+    <footer>
+      <p><a href="https://timberlinedata.tech/">timberlinedata.tech</a> · Repo: <a href="https://github.com/ErikSvetich/service-samples">ErikSvetich/service-samples</a></p>
+    </footer>
+  </div>
+</body>
+</html>
